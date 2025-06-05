@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from "react"; // Import useCallback
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { addStory } from "../services/storyApi";
 import { getToken } from "../utils/auth";
@@ -30,35 +30,31 @@ const AddStoryPage = () => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const streamRef = useRef(null);
-  const [isCameraActive, setIsCameraActive] = useState(false); // State untuk mengontrol status UI kamera
+  const [isCameraActive, setIsCameraActive] = useState(false);
 
   // Untuk peta
   const mapRef = useRef(null);
   const [mapMarker, setMapMarker] = useState(null);
   const defaultMapCenter = [-6.2, 106.8]; // Jakarta
 
-  // Gunakan useCallback untuk stopCamera agar tidak dibuat ulang setiap render
   const stopCamera = useCallback(() => {
     console.log("stopCamera called.");
     if (streamRef.current) {
       streamRef.current.getTracks().forEach((track) => track.stop());
       streamRef.current = null;
     }
-    // Hanya atur srcObject ke null jika videoRef.current ada dan bukan null
     if (videoRef.current) {
       videoRef.current.srcObject = null;
     }
-    setIsCameraActive(false); // Pastikan state kamera non-aktif
+    setIsCameraActive(false);
   }, []);
 
-  // Fungsi untuk memulai kamera
   const startCamera = () => {
-    setPhoto(null); // Bersihkan pratinjau foto jika ada
-    setIsCameraActive(true); // Ini akan memicu `useEffect` untuk memulai stream
+    setPhoto(null);
+    setIsCameraActive(true);
     setError(null);
   };
 
-  // useEffect untuk mengelola stream kamera saat isCameraActive berubah
   useEffect(() => {
     console.log(
       "useEffect triggered. isCameraActive:",
@@ -68,13 +64,11 @@ const AddStoryPage = () => {
     );
 
     const initializeCamera = async () => {
-      // Pastikan videoRef.current ada sebelum mencoba mengaksesnya
       if (!videoRef.current) {
         console.warn("videoRef.current is null, cannot initialize camera.");
         return;
       }
 
-      // Pastikan belum ada stream aktif untuk mencegah duplikasi
       if (streamRef.current) {
         console.warn("Stream already active.");
         return;
@@ -91,31 +85,21 @@ const AddStoryPage = () => {
       } catch (err) {
         console.error("Error accessing camera:", err);
         setError("Gagal mengakses kamera. Pastikan izin kamera diberikan.");
-        setIsCameraActive(false); // Nonaktifkan kamera jika terjadi error
+        setIsCameraActive(false);
       }
     };
 
     if (isCameraActive) {
       initializeCamera();
     }
-    // else if (!isCameraActive && streamRef.current) {
-    //   // Ini adalah kondisi yang menyebabkan masalah, stopCamera dipanggil
-    //   // saat isCameraActive menjadi false, bahkan jika itu karena unmount.
-    //   // Biarkan cleanup function di bawah yang menangani.
-    //   stopCamera();
-    // }
 
-    // Cleanup function: memastikan stream berhenti saat komponen unmount
-    // atau isCameraActive berubah menjadi false (misal, karena user klik stop)
     return () => {
-      // Pastikan kita hanya menghentikan stream yang memang aktif dari useEffect ini
       if (streamRef.current) {
         stopCamera();
       }
     };
-  }, [isCameraActive, stopCamera]); // Tambahkan stopCamera ke dependency array karena dia useCallback
+  }, [isCameraActive, stopCamera]);
 
-  // Fungsi untuk mengambil gambar dari kamera
   const takePhoto = () => {
     if (videoRef.current && canvasRef.current) {
       const video = videoRef.current;
@@ -125,11 +109,12 @@ const AddStoryPage = () => {
       canvas.width = video.videoWidth;
       canvas.height = video.videoHeight;
 
+      // drawImage mengambil stream mentah, jadi orientasi foto asli tidak terpengaruh oleh transform CSS
       context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
       canvas.toBlob((blob) => {
         setPhoto(blob);
-        stopCamera(); // Hentikan kamera setelah mengambil gambar
+        stopCamera();
       }, "image/jpeg");
     } else {
       setError("Video stream tidak tersedia untuk mengambil foto.");
@@ -137,16 +122,14 @@ const AddStoryPage = () => {
     }
   };
 
-  // Handle perubahan file input
   const handleFileInputChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       setPhoto(file);
-      stopCamera(); // Hentikan kamera jika memilih file
+      stopCamera();
     }
   };
 
-  // Fungsi untuk menangani klik pada peta
   const handleMapClick = (e) => {
     const { lat, lng } = e.latlng;
     setLat(lat.toFixed(6));
@@ -154,7 +137,6 @@ const AddStoryPage = () => {
     setMapMarker([lat, lng]);
   };
 
-  // Reset marker peta jika lat/lon direset secara manual
   useEffect(() => {
     if (!lat && !lon) {
       setMapMarker(null);
@@ -214,10 +196,9 @@ const AddStoryPage = () => {
           ></textarea>
         </div>
 
-        {/* Bagian Input Gambar */}
         <div className="form-group">
-          <label>Foto Cerita</label>
-          {/* Kondisi untuk menampilkan video stream */}
+          <label htmlFor="photo-file-input">Foto Cerita</label>
+
           {isCameraActive && (
             <div
               style={{
@@ -232,7 +213,12 @@ const AddStoryPage = () => {
                 autoPlay
                 playsInline
                 muted
-                style={{ width: "100%", height: "auto", display: "block" }}
+                style={{
+                  width: "100%",
+                  height: "auto",
+                  display: "block",
+                  transform: "scaleX(-1)", // <-- Ini untuk membuat pratinjau kamera tidak mirror
+                }}
               ></video>
               <canvas ref={canvasRef} style={{ display: "none" }}></canvas>
               <div
@@ -260,14 +246,12 @@ const AddStoryPage = () => {
             </div>
           )}
 
-          {/* Tombol 'Buka Kamera' hanya ditampilkan jika kamera tidak aktif dan belum ada foto */}
           {!isCameraActive && !photo && (
             <button type="button" onClick={startCamera}>
               Buka Kamera
             </button>
           )}
 
-          {/* Pratinjau gambar setelah diambil atau dipilih */}
           {photo && (
             <div style={{ marginTop: "15px", textAlign: "center" }}>
               <p>Pratinjau Gambar:</p>
@@ -277,7 +261,7 @@ const AddStoryPage = () => {
                     ? URL.createObjectURL(photo)
                     : photo
                 }
-                alt="Pratinjau"
+                alt="Pratinjau gambar yang akan diunggah"
                 style={{
                   maxWidth: "100%",
                   maxHeight: "200px",
@@ -311,7 +295,6 @@ const AddStoryPage = () => {
           />
         </div>
 
-        {/* Bagian Peta untuk Latitude dan Longitude */}
         <div className="form-group">
           <label>Pilih Lokasi di Peta (Opsional)</label>
           <MapContainer
@@ -351,6 +334,7 @@ const AddStoryPage = () => {
               value={lat}
               onChange={(e) => setLat(e.target.value)}
               step="any"
+              aria-label="Latitude" // Penting untuk screen reader jika tidak ada label visual terpisah
             />
             <input
               id="lon"
@@ -359,6 +343,7 @@ const AddStoryPage = () => {
               value={lon}
               onChange={(e) => setLon(e.target.value)}
               step="any"
+              aria-label="Longitude" // Penting untuk screen reader jika tidak ada label visual terpisah
             />
           </div>
           <button

@@ -1,90 +1,79 @@
-const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+// src/services/storyApi.js
+// Hapus import axios: import axios from 'axios';
+import { getToken } from "../utils/auth"; // Tetap butuh ini
 
-// Fungsi helper untuk penanganan response API
-const handleResponse = async (response) => {
-  const data = await response.json();
-  if (!response.ok) {
-    throw new Error(data.message || "Something went wrong");
-  }
-  return data;
-};
+const BASE_URL = "https://story-api.dicoding.dev/v1";
 
-// Fungsi untuk registrasi pengguna baru
-export const register = async (name, email, password) => {
+// Fungsi untuk mendapatkan semua cerita
+export const getAllStories = async () => {
   try {
-    const response = await fetch(`${BASE_URL}/register`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ name, email, password }),
-    });
-    return await handleResponse(response);
-  } catch (error) {
-    console.error("Error during registration:", error);
-    throw error;
-  }
-};
+    const token = getToken();
+    const headers = token ? { Authorization: `Bearer ${token}` } : {};
 
-// Fungsi untuk login pengguna
-export const login = async (email, password) => {
-  try {
-    const response = await fetch(`${BASE_URL}/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password }),
-    });
-    const data = await handleResponse(response);
-    return data.loginResult; // Berisi token dan user info
-  } catch (error) {
-    console.error("Error during login:", error);
-    throw error;
-  }
-};
-
-// Fungsi untuk mengambil semua cerita
-export const getAllStories = async (token) => {
-  try {
     const response = await fetch(`${BASE_URL}/stories`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      method: "GET",
+      headers: headers,
     });
-    const data = await handleResponse(response);
+
+    const data = await response.json(); // Penting: Mengurai JSON response
+
+    if (data.error) {
+      if (response.status === 401) {
+        throw new Error(
+          "Invalid token structure or token expired. Please login again."
+        );
+      }
+      throw new Error(data.message || "Gagal mengambil cerita");
+    }
     return data.listStory;
   } catch (error) {
-    console.error("Error fetching stories:", error);
-    throw error;
+    console.error("Error fetching stories:", error.message);
+    throw new Error(error.message || "Gagal mengambil cerita");
   }
 };
 
-// Fungsi untuk mengambil detail cerita berdasarkan ID
-export const getStoryDetail = async (id, token) => {
+// Fungsi untuk mendapatkan detail cerita
+export const getStoryDetail = async (id) => {
   try {
+    const token = getToken();
+    const headers = token ? { Authorization: `Bearer ${token}` } : {};
+
     const response = await fetch(`${BASE_URL}/stories/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      method: "GET",
+      headers: headers,
     });
-    const data = await handleResponse(response);
+
+    const data = await response.json(); // Penting: Mengurai JSON response
+
+    if (data.error) {
+      if (response.status === 401) {
+        throw new Error(
+          "Invalid token structure or token expired. Please login again."
+        );
+      }
+      throw new Error(data.message || "Gagal mengambil detail cerita");
+    }
     return data.story;
   } catch (error) {
-    console.error(`Error fetching story detail for ID ${id}:`, error);
-    throw error;
+    console.error("Error fetching story detail:", error.message);
+    throw new Error(error.message || "Gagal mengambil detail cerita");
   }
 };
 
-// Fungsi untuk menambah cerita baru
+// Fungsi untuk menambah cerita baru (dengan upload foto dan lokasi opsional)
 export const addStory = async (description, photo, lat, lon, token) => {
   try {
     const formData = new FormData();
     formData.append("description", description);
     formData.append("photo", photo);
-    if (lat !== undefined && lat !== null) formData.append("lat", lat);
-    if (lon !== undefined && lon !== null) formData.append("lon", lon);
+    if (lat !== undefined && lat !== null) {
+      formData.append("lat", lat);
+    }
+    if (lon !== undefined && lon !== null) {
+      formData.append("lon", lon);
+    }
 
+    // fetch dengan FormData tidak perlu Content-Type header karena browser akan mengaturnya
     const response = await fetch(`${BASE_URL}/stories`, {
       method: "POST",
       headers: {
@@ -92,9 +81,15 @@ export const addStory = async (description, photo, lat, lon, token) => {
       },
       body: formData,
     });
-    return await handleResponse(response);
+
+    const data = await response.json(); // Penting: Mengurai JSON response
+
+    if (data.error) {
+      throw new Error(data.message || "Gagal menambah cerita");
+    }
+    return data;
   } catch (error) {
-    console.error("Error adding story:", error);
-    throw error;
+    console.error("Error adding story:", error.message);
+    throw new Error(error.message || "Gagal menambah cerita");
   }
 };

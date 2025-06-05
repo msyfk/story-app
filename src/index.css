@@ -1,373 +1,420 @@
-/* src/index.css */
+/* src/index.css atau src/App.css */
 
-:root {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  line-height: 1.6;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: #333; /* Warna teks utama untuk light mode */
-  background-color: #f4f7f6; /* Default, akan ditimpa oleh body */
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* Dark mode adjustment */
-@media (prefers-color-scheme: dark) {
-  :root {
-    color: #e0e0e0; /* Warna teks utama untuk dark mode */
-    background-color: #2c2c2c; /* Default, akan ditimpa oleh body */
-  }
-  a {
-    color: #8ab4f8; /* Link color in dark mode */
-  }
-  button {
-    background-color: #4a4a4a;
-    color: #e0e0e0;
-  }
-  input, textarea {
-    background-color: #3a3a3a;
-    color: #e0e0e0;
-    border-color: #555;
-  }
-}
+/* --- GLOBAL STYLING --- */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 body {
+  font-family: 'Poppins', sans-serif;
   margin: 0;
-  padding: 0; /* Pastikan tidak ada padding di body */
-  min-height: 100vh; /* Pastikan body setinggi viewport */
-  width: 100vw; /* Pastikan body selebar viewport */
-  box-sizing: border-box;
-
-  /* Latar Belakang Gradien yang Lebih Kompleks */
-  background: linear-gradient(135deg, #6dd5ed, #2193b0); /* Contoh gradien biru */
-}
-
-@media (prefers-color-scheme: dark) {
-  body {
-    background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d); /* Gradien dark mode */
-  }
-}
-
-h1, h2, h3 {
-  color: #212121;
-  margin-bottom: 15px;
-}
-@media (prefers-color-scheme: dark) {
-  h1, h2, h3 {
-    color: #f0f0f0;
-  }
-}
-
-a {
-  font-weight: 500;
-  color: #007bff;
-  text-decoration: none;
-  transition: color 0.2s ease-in-out;
-}
-a:hover {
-  color: #0056b3;
-}
-
-button {
-  border-radius: 8px;
-  border: none;
-  padding: 10px 20px;
-  font-size: 1em;
-  font-weight: 600;
-  font-family: inherit;
-  background-color: #007bff;
-  color: white;
-  cursor: pointer;
-  transition: background-color 0.25s ease-in-out, transform 0.1s ease-in-out, box-shadow 0.25s ease-in-out;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-button:hover {
-  background-color: #0056b3;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-}
-button:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-button:disabled {
-  background-color: #cccccc;
-  cursor: not-allowed;
-  box-shadow: none;
-}
-
-input,
-textarea {
-  padding: 12px 15px;
-  border-radius: 8px;
-  border: 1px solid #ddd;
-  width: 100%;
-  box-sizing: border-box;
-  font-family: inherit;
-  font-size: 1em;
-  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-  background-color: white;
+  padding: 0;
+  background-color: #f4f7f6; /* Warna latar belakang lembut */
   color: #333;
-}
-input:focus,
-textarea:focus {
-  outline: none;
-  border-color: #007bff;
-  box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.35);
+  line-height: 1.6;
 }
 
-/* Main App Container */
-.app-wrapper {
-  background-color: rgba(255, 255, 255, 0.95);
-  border-radius: 0; /* Hapus border-radius agar memenuhi sudut */
-  box-shadow: none; /* Hapus shadow agar tidak ada batas kotak */
-  padding: 0; /* Hapus padding di sini, pindahkan ke content-container */
-  width: 100%; /* Pastikan ini 100% */
-  min-height: 100vh; /* Set tinggi minimal ke 100% viewport */
-  display: flex;
-  flex-direction: column;
+.container {
+  max-width: 1000px;
+  margin: 20px auto;
+  padding: 0 20px;
 }
 
-@media (prefers-color-scheme: dark) {
-  .app-wrapper {
-    background-color: rgba(45, 45, 45, 0.95);
-    box-shadow: none;
-  }
-}
-
-/* General Container (untuk konten dalam app-wrapper) */
-.content-container {
-    padding: 20px; /* Pindahkan padding ke sini */
-    flex-grow: 1; /* Konten akan mengisi ruang yang tersedia */
-}
-
-nav {
+/* --- NAVBAR STYLING --- */
+.navbar {
+  background-color: #2c3e50; /* Warna gelap untuk navbar */
+  color: #ecf0f1;
+  padding: 15px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 20px;
-  border-bottom: 1px solid #eee;
-  /* margin-bottom: 25px; Hapus margin-bottom di nav jika ingin rapat dengan konten */
-}
-@media (prefers-color-scheme: dark) {
-  nav {
-    border-bottom: 1px solid #555;
-  }
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-nav .nav-links {
-  display: flex;
-  gap: 20px;
-}
-
-nav a {
-  font-size: 1.1em;
+.navbar-brand a {
+  color: #ecf0f1;
+  text-decoration: none;
+  font-size: 1.8em;
   font-weight: 600;
-  color: #555;
-}
-nav a:hover {
-  color: #007bff;
 }
 
-nav button {
-  padding: 10px 20px;
-  font-size: 0.95em;
-  background-color: #dc3545;
-  box-shadow: none;
-}
-nav button:hover {
-  background-color: #c82333;
-  transform: translateY(-1px);
+.navbar-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 25px; /* Jarak antar item navigasi */
 }
 
-nav .nav-auth {
-  display: flex; /* Jadikan ini flex container */
-  gap: 15px;    /* Beri jarak 15px antar item */
-  align-items: center; /* Sejajarkan item secara vertikal */
+.navbar-links li {
+  display: inline-block;
 }
 
-/* Anda mungkin juga ingin sedikit style untuk Link di nav-auth */
-nav .nav-auth a {
-  padding: 8px 12px;
-  /* Contoh: background-color: #f0f0f0; */
+.navbar-links a,
+.navbar-links button {
+  color: #ecf0f1;
+  text-decoration: none;
+  padding: 8px 15px;
   border-radius: 5px;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-weight: 500;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1em;
 }
 
-nav .nav-auth a:hover {
-  /* Contoh: background-color: #e0e0e0; */
-  color: #007bff; /* Sesuaikan warna hover */
+.navbar-links a:hover,
+.navbar-links button:hover {
+  background-color: #34495e; /* Sedikit lebih gelap saat hover */
+  color: #ffffff;
 }
 
-/* Form Styling (Login/Register/Add Story) */
-.form-card {
-  background-color: rgba(255, 255, 255, 0.9); /* Sedikit transparan agar background terlihat */
+/* --- FORM STYLING (Login, Register) --- */
+.login-page,
+.register-page {
+  background-color: #ffffff;
   padding: 40px;
   border-radius: 10px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-  width: 100%;
-  max-width: 450px;
-  margin: 40px auto; /* Tetap centering di dalam content-container */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  max-width: 500px;
+  margin: 50px auto;
   text-align: center;
-  position: relative;
-}
-@media (prefers-color-scheme: dark) {
-  .form-card {
-    background-color: rgba(30, 30, 30, 0.9);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-  }
 }
 
-.form-card h2 {
-  margin-top: 0;
+.login-page h2,
+.register-page h2 {
+  color: #2c3e50;
   margin-bottom: 30px;
   font-size: 2em;
-  color: #333;
-}
-@media (prefers-color-scheme: dark) {
-  .form-card h2 {
-    color: #f0f0f0;
-  }
+  font-weight: 600;
 }
 
-.form-group {
-  margin-bottom: 25px;
+.login-page form div,
+.register-page form div {
+  margin-bottom: 20px;
   text-align: left;
 }
 
-.form-group label {
+.login-page label,
+.register-page label {
   display: block;
   margin-bottom: 8px;
-  font-weight: 600;
+  font-weight: 500;
   color: #555;
 }
-@media (prefers-color-scheme: dark) {
-  .form-group label {
-    color: #ccc;
-  }
-}
 
-.form-card button {
-  width: 100%;
-  margin-top: 15px;
-}
-
-.error-message, .success-message {
-  padding: 12px;
+.login-page input[type="email"],
+.login-page input[type="password"],
+.login-page input[type="text"],
+.register-page input[type="email"],
+.register-page input[type="password"],
+.register-page input[type="text"] {
+  width: calc(100% - 20px); /* Kurangi padding */
+  padding: 12px 10px;
+  border: 1px solid #ccc;
   border-radius: 6px;
-  margin-top: 20px;
-  font-weight: 500;
-  text-align: center;
-}
-.error-message {
-  color: #dc3545;
-  background-color: #f8d7da;
-  border: 1px solid #f5c6cb;
-}
-.success-message {
-  color: #28a745;
-  background-color: #d4edda;
-  border: 1px solid #c3e6cb;
-}
-@media (prefers-color-scheme: dark) {
-  .error-message {
-    color: #f8d7da;
-    background-color: #721c24;
-    border-color: #f5c6cb;
-  }
-  .success-message {
-    color: #d4edda;
-    background-color: #155724;
-    border-color: #c3e6cb;
-  }
+  font-size: 1em;
+  transition: border-color 0.3s ease;
 }
 
-.form-card p {
-  margin-top: 25px;
+.login-page input:focus,
+.register-page input:focus {
+  border-color: #3498db; /* Warna fokus */
+  outline: none;
+  box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+}
+
+/* --- BUTTON STYLING --- */
+button[type="submit"] {
+  background-color: #28a745; /* Warna hijau untuk submit */
+  color: white;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1.1em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  width: 100%;
+  margin-top: 20px;
+}
+
+button[type="submit"]:hover {
+  background-color: #218838; /* Lebih gelap saat hover */
+  transform: translateY(-2px);
+}
+
+button[type="submit"]:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+/* --- ERROR MESSAGE STYLING --- */
+.error-message {
+  color: #e74c3c; /* Merah untuk pesan error */
+  margin-top: 15px;
+  font-size: 0.9em;
+  font-weight: 500;
+}
+
+/* --- LINK STYLING PADA FORM --- */
+.login-page p a,
+.register-page p a {
+  color: #3498db;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.login-page p a:hover,
+.register-page p a:hover {
+  color: #217dbb;
+  text-decoration: underline;
+}
+
+/* --- LOADING INDICATOR / SPINNER (Jika ada) --- */
+/* Contoh dasar, sesuaikan dengan LoadingIndicator.jsx Anda */
+.loading-indicator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px; /* Tinggi spinner */
+  font-size: 1.2em;
   color: #666;
 }
-@media (prefers-color-scheme: dark) {
-  .form-card p {
-    color: #aaa;
-  }
+
+.spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-left-color: #3498db;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  animation: spin 1s linear infinite;
+  margin-right: 10px;
 }
 
-/* Story Card Specific Styling */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* --- HOMEPAGE STYLING --- */
+.story-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+    padding: 20px 0;
+}
+
 .story-card {
-  background-color: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
+
 .story-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-}
-@media (prefers-color-scheme: dark) {
-  .story-card {
-    background-color: #3a3a3a;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  }
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
 }
 
 .story-card img {
-  width: 100%;
-  height: 220px;
-  object-fit: cover;
-  border-radius: 8px;
-  margin-bottom: 15px;
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
 }
 
-.story-card h3 {
-  margin: 0;
-  font-size: 1.4em;
-  color: #333;
+.story-card-content {
+    padding: 20px;
 }
-@media (prefers-color-scheme: dark) {
-  .story-card h3 {
-    color: #f0f0f0;
+
+.story-card-content h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #2c3e50;
+    font-size: 1.5em;
+    font-weight: 600;
+}
+
+.story-card-content p {
+    color: #666;
+    font-size: 0.95em;
+    margin-bottom: 15px;
+    max-height: 4.5em; /* Batasi tinggi deskripsi */
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.story-card-content .read-more {
+    display: inline-block;
+    background-color: #3498db;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 0.9em;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+}
+
+.story-card-content .read-more:hover {
+    background-color: #217dbb;
+}
+
+/* --- DETAIL STORY PAGE --- */
+.detail-story-page {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    margin: 50px auto;
+    max-width: 800px;
+}
+
+.detail-story-page img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 25px;
+}
+
+.detail-story-page h2 {
+    color: #2c3e50;
+    font-size: 2.5em;
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.detail-story-page p {
+    color: #555;
+    font-size: 1.1em;
+    line-height: 1.8;
+    margin-bottom: 20px;
+}
+
+.detail-story-page .story-meta {
+    font-size: 0.9em;
+    color: #888;
+    margin-top: 20px;
+    border-top: 1px solid #eee;
+    padding-top: 15px;
+}
+
+/* --- ADD STORY PAGE --- */
+.add-story-page {
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    max-width: 600px;
+    margin: 50px auto;
+    text-align: center;
+}
+
+.add-story-page h2 {
+    color: #2c3e50;
+    margin-bottom: 30px;
+    font-size: 2em;
+    font-weight: 600;
+}
+
+.add-story-page form div {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.add-story-page label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #555;
+}
+
+.add-story-page input[type="file"] {
+    display: block;
+    width: 100%;
+    padding: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1em;
+    color: #666;
+    background-color: #f9f9f9;
+}
+
+.add-story-page input[type="text"],
+.add-story-page textarea {
+    width: calc(100% - 20px);
+    padding: 12px 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1em;
+    transition: border-color 0.3s ease;
+}
+
+.add-story-page textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.add-story-page input:focus,
+.add-story-page textarea:focus {
+    border-color: #3498db;
+    outline: none;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+}
+
+.add-story-page button[type="submit"] {
+    background-color: #3498db; /* Warna biru untuk submit */
+    margin-top: 30px;
+}
+
+.add-story-page button[type="submit"]:hover {
+    background-color: #217dbb;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+  }
+  .navbar-links {
+    margin-top: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .navbar-links li {
+    margin: 5px 10px;
+  }
+  .story-list {
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   }
 }
 
-.story-card p {
-  font-size: 0.95em;
-  color: #666;
-  flex-grow: 1;
-}
-@media (prefers-color-scheme: dark) {
-  .story-card p {
-    color: #aaa;
+@media (max-width: 480px) {
+  .navbar {
+    padding: 10px 15px;
   }
-}
-
-/* Grid for stories */
-.stories-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 30px;
-  padding: 20px;
-}
-
-/* Footer */
-.app-footer {
-  text-align: center;
-  padding: 20px;
-  margin-top: auto;
-  border-top: 1px solid #eee;
-  color: #888;
-  font-size: 0.9em;
-}
-@media (prefers-color-scheme: dark) {
-  .app-footer {
-    border-top: 1px solid #555;
-    color: #aaa;
+  .navbar-brand a {
+    font-size: 1.5em;
+  }
+  .navbar-links {
+    gap: 15px;
+  }
+  .login-page,
+  .register-page,
+  .add-story-page,
+  .detail-story-page {
+    padding: 20px;
+    margin: 30px auto;
+  }
+  .login-page h2,
+  .register-page h2,
+  .add-story-page h2 {
+    font-size: 1.8em;
+  }
+  .detail-story-page h2 {
+      font-size: 2em;
   }
 }

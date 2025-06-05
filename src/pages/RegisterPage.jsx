@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import { register } from "../services/storyApi";
+import { Link, useNavigate } from "react-router-dom";
+import { register } from "../services/authApi";
 
 const RegisterPage = () => {
   const [name, setName] = useState("");
@@ -19,10 +19,9 @@ const RegisterPage = () => {
     try {
       await register(name, email, password);
       setSuccess("Registrasi berhasil! Silakan login.");
-      setName("");
-      setEmail("");
-      setPassword("");
-      setTimeout(() => navigate("/login"), 2000); // Redirect ke halaman login setelah 2 detik
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -32,8 +31,6 @@ const RegisterPage = () => {
 
   return (
     <div className="form-card">
-      {" "}
-      {/* Tambahkan kelas ini */}
       <h2>Register</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
@@ -63,7 +60,7 @@ const RegisterPage = () => {
           <input
             id="password"
             type="password"
-            placeholder="Buat password"
+            placeholder="Masukkan password Anda"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
@@ -75,7 +72,7 @@ const RegisterPage = () => {
       </form>
       {error && <p className="error-message">{error}</p>}
       {success && <p className="success-message">{success}</p>}
-      <p>
+      <p style={{ textAlign: "center", marginTop: "20px" }}>
         Sudah punya akun? <Link to="/login">Login di sini</Link>
       </p>
     </div>

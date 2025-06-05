@@ -1,55 +1,63 @@
 // src/pages/LoginPage.jsx
-import React from "react";
-import { useNavigate, Link } from "react-router-dom";
-import useLoginPresenter from "../presenters/LoginPresenter"; // Import presenter
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { login } from "../services/authApi";
+import { setToken } from "../utils/auth";
 
-const LoginPage = ({ onLoginSuccess }) => {
+// Menerima setIsLoggedIn sebagai props dari App.jsx
+const LoginPage = ({ setIsLoggedIn }) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  // Menggunakan presenter untuk logika
-  const {
-    email,
-    setEmail,
-    password,
-    setPassword,
-    loading,
-    error,
-    handleLogin,
-  } = useLoginPresenter(onLoginSuccess, navigate); // Pass necessary callbacks/dependencies
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+    try {
+      const receivedToken = await login(email, password);
+      setToken(receivedToken);
+      setIsLoggedIn(true); // <-- BARIS PENTING INI! Memberi tahu App.jsx bahwa login berhasil
+      console.log("LoginPage: Login berhasil. setIsLoggedIn(true) dipanggil."); // Debugging
+      navigate("/");
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <div className="form-card">
+    <div className="login-page">
       <h2>Login</h2>
-      <form onSubmit={handleLogin}>
-        {" "}
-        {/* Gunakan handleLogin dari presenter */}
-        <div className="form-group">
+      <form onSubmit={handleSubmit}>
+        <div>
           <label htmlFor="email">Email</label>
           <input
-            id="email"
             type="email"
-            placeholder="Masukkan email Anda"
+            id="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)} // Update state melalui presenter
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
         </div>
-        <div className="form-group">
+        <div>
           <label htmlFor="password">Password</label>
           <input
-            id="password"
             type="password"
-            placeholder="Masukkan password Anda"
+            id="password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)} // Update state melalui presenter
+            onChange={(e) => setPassword(e.target.value)}
             required
           />
         </div>
         <button type="submit" disabled={loading}>
-          {loading ? "Login..." : "Login"}
+          {loading ? "Logging in..." : "Login"}
         </button>
+        {error && <p className="error-message">{error}</p>}
       </form>
-      {error && <p className="error-message">{error}</p>}
       <p>
         Belum punya akun? <Link to="/register">Daftar di sini</Link>
       </p>

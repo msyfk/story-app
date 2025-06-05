@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { register } from "../services/authApi";
+import LoadingIndicator from "../components/LoadingIndicator"; // Import LoadingIndicator
 
 const RegisterPage = () => {
   const [name, setName] = useState("");
@@ -66,7 +67,9 @@ const RegisterPage = () => {
             required
           />
         </div>
-        <button type="submit" disabled={loading}>
+        <button type="submit" disabled={loading} className="btn-primary">
+          {" "}
+          {/* Menggunakan kelas .btn-primary */}
           {loading ? "Mendaftar..." : "Daftar"}
         </button>
       </form>
@@ -75,6 +78,8 @@ const RegisterPage = () => {
       <p style={{ textAlign: "center", marginTop: "20px" }}>
         Sudah punya akun? <Link to="/login">Login di sini</Link>
       </p>
+      {loading && <LoadingIndicator />}{" "}
+      {/* Tampilkan loading saat proses register */}
     </div>
   );
 };

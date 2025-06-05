@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../services/authApi";
 import { setToken } from "../utils/auth";
+import LoadingIndicator from "../components/LoadingIndicator"; // Import LoadingIndicator
 
-// Menerima setIsLoggedIn sebagai props dari App.jsx
 const LoginPage = ({ setIsLoggedIn }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -19,8 +19,8 @@ const LoginPage = ({ setIsLoggedIn }) => {
     try {
       const receivedToken = await login(email, password);
       setToken(receivedToken);
-      setIsLoggedIn(true); // <-- BARIS PENTING INI! Memberi tahu App.jsx bahwa login berhasil
-      console.log("LoginPage: Login berhasil. setIsLoggedIn(true) dipanggil."); // Debugging
+      setIsLoggedIn(true);
+      console.log("LoginPage: Login berhasil. setIsLoggedIn(true) dipanggil.");
       navigate("/");
     } catch (err) {
       setError(err.message);
@@ -30,10 +30,14 @@ const LoginPage = ({ setIsLoggedIn }) => {
   };
 
   return (
-    <div className="login-page">
+    <div className="form-card">
+      {" "}
+      {/* Menggunakan kelas .form-card */}
       <h2>Login</h2>
       <form onSubmit={handleSubmit}>
-        <div>
+        <div className="form-group">
+          {" "}
+          {/* Menggunakan kelas .form-group */}
           <label htmlFor="email">Email</label>
           <input
             type="email"
@@ -43,7 +47,9 @@ const LoginPage = ({ setIsLoggedIn }) => {
             required
           />
         </div>
-        <div>
+        <div className="form-group">
+          {" "}
+          {/* Menggunakan kelas .form-group */}
           <label htmlFor="password">Password</label>
           <input
             type="password"
@@ -53,7 +59,9 @@ const LoginPage = ({ setIsLoggedIn }) => {
             required
           />
         </div>
-        <button type="submit" disabled={loading}>
+        <button type="submit" disabled={loading} className="btn-primary">
+          {" "}
+          {/* Menggunakan kelas .btn-primary */}
           {loading ? "Logging in..." : "Login"}
         </button>
         {error && <p className="error-message">{error}</p>}
@@ -61,6 +69,8 @@ const LoginPage = ({ setIsLoggedIn }) => {
       <p>
         Belum punya akun? <Link to="/register">Daftar di sini</Link>
       </p>
+      {loading && <LoadingIndicator />}{" "}
+      {/* Tampilkan loading saat proses login */}
     </div>
   );
 };

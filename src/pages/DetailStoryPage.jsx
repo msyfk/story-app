@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { getStoryDetail } from '../services/storyApi';
-import LoadingIndicator from '../components/LoadingIndicator';
-import { formatDistanceToNow } from 'date-fns';
-import { id } from 'date-fns/locale';
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { getStoryDetail } from "../services/storyApi";
+import LoadingIndicator from "../components/LoadingIndicator";
+import { formatDistanceToNow } from "date-fns";
+import { id } from "date-fns/locale";
 
 const DetailStoryPage = () => {
   const { id: storyId } = useParams();
@@ -39,15 +39,25 @@ const DetailStoryPage = () => {
   }
 
   return (
-    <article className="detail-story-card" aria-labelledby="story-detail-heading"> 
+    <article
+      className="detail-story-card"
+      aria-labelledby="story-detail-heading"
+    >
+      {" "}
+      {/* Menggunakan kelas .detail-story-card */}
       <h2 id="story-detail-heading">{story.name}</h2>
-      <img 
-        src={story.photoUrl} 
-        alt={`Foto cerita berjudul ${story.name}`} 
-      />
+      <img src={story.photoUrl} alt={`Foto cerita berjudul ${story.name}`} />
       <p>{story.description}</p>
-      <div className="meta">
-        <p>Dibuat: {formatDistanceToNow(new Date(story.createdAt), { addSuffix: true, locale: id })}</p>
+      <div className="story-meta">
+        {" "}
+        {/* Menggunakan kelas .story-meta */}
+        <p>
+          Dibuat:{" "}
+          {formatDistanceToNow(new Date(story.createdAt), {
+            addSuffix: true,
+            locale: id,
+          })}
+        </p>
         {story.lat && story.lon && (
           <p className="location">
             Lokasi: {story.lat}, {story.lon}

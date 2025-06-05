@@ -5,6 +5,7 @@ import { getToken } from "../utils/auth";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
+import LoadingIndicator from "../components/LoadingIndicator"; // Import LoadingIndicator
 
 // Fix marker icon issue for Leaflet
 delete L.Icon.Default.prototype._getIconUrl;
@@ -26,13 +27,11 @@ const AddStoryPage = () => {
   const navigate = useNavigate();
   const token = getToken();
 
-  // Untuk kamera
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const streamRef = useRef(null);
   const [isCameraActive, setIsCameraActive] = useState(false);
 
-  // Untuk peta
   const mapRef = useRef(null);
   const [mapMarker, setMapMarker] = useState(null);
   const defaultMapCenter = [-6.2, 106.8]; // Jakarta
@@ -109,7 +108,6 @@ const AddStoryPage = () => {
       canvas.width = video.videoWidth;
       canvas.height = video.videoHeight;
 
-      // drawImage mengambil stream mentah, jadi orientasi foto asli tidak terpengaruh oleh transform CSS
       context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
       canvas.toBlob((blob) => {
@@ -182,9 +180,13 @@ const AddStoryPage = () => {
 
   return (
     <div className="form-card">
+      {" "}
+      {/* Menggunakan kelas .form-card */}
       <h2>Tambah Cerita Baru</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
+          {" "}
+          {/* Menggunakan kelas .form-group */}
           <label htmlFor="description">Deskripsi Cerita</label>
           <textarea
             id="description"
@@ -197,8 +199,9 @@ const AddStoryPage = () => {
         </div>
 
         <div className="form-group">
+          {" "}
+          {/* Menggunakan kelas .form-group */}
           <label htmlFor="photo-file-input">Foto Cerita</label>
-
           {isCameraActive && (
             <div
               style={{
@@ -217,7 +220,7 @@ const AddStoryPage = () => {
                   width: "100%",
                   height: "auto",
                   display: "block",
-                  transform: "scaleX(-1)", // <-- Ini untuk membuat pratinjau kamera tidak mirror
+                  transform: "scaleX(-1)",
                 }}
               ></video>
               <canvas ref={canvasRef} style={{ display: "none" }}></canvas>
@@ -226,32 +229,35 @@ const AddStoryPage = () => {
                   display: "flex",
                   justifyContent: "center",
                   padding: "10px",
+                  gap: "10px" /* Menambahkan jarak antar tombol */,
                 }}
               >
                 <button
                   type="button"
                   onClick={takePhoto}
-                  style={{ marginRight: "10px" }}
+                  className="btn-secondary"
                 >
                   Ambil Foto
                 </button>
                 <button
                   type="button"
                   onClick={stopCamera}
-                  style={{ backgroundColor: "#dc3545" }}
+                  className="btn-danger"
                 >
                   Stop Kamera
                 </button>
               </div>
             </div>
           )}
-
           {!isCameraActive && !photo && (
-            <button type="button" onClick={startCamera}>
+            <button
+              type="button"
+              onClick={startCamera}
+              className="btn-secondary"
+            >
               Buka Kamera
             </button>
           )}
-
           {photo && (
             <div style={{ marginTop: "15px", textAlign: "center" }}>
               <p>Pratinjau Gambar:</p>
@@ -267,35 +273,37 @@ const AddStoryPage = () => {
                   maxHeight: "200px",
                   objectFit: "contain",
                   borderRadius: "8px",
+                  marginBottom: "10px" /* Jarak dari tombol */,
                 }}
               />
-              <div style={{ marginTop: "10px" }}>
+              <div>
                 <button
                   type="button"
                   onClick={() => {
                     setPhoto(null);
                     setError(null);
                   }}
+                  className="btn-info" /* Menggunakan btn-info atau btn-secondary */
                 >
                   Ganti Gambar
                 </button>
               </div>
             </div>
           )}
-
           <p style={{ textAlign: "center", margin: "15px 0" }}>atau</p>
-
           <input
             id="photo-file-input"
             type="file"
             accept="image/*"
             onChange={handleFileInputChange}
             required={!photo}
-            style={{ display: "block" }}
+            style={{ display: "block" }} // Pastikan input file tetap blok
           />
         </div>
 
         <div className="form-group">
+          {" "}
+          {/* Menggunakan kelas .form-group */}
           <label>Pilih Lokasi di Peta (Opsional)</label>
           <MapContainer
             center={defaultMapCenter}
@@ -334,7 +342,7 @@ const AddStoryPage = () => {
               value={lat}
               onChange={(e) => setLat(e.target.value)}
               step="any"
-              aria-label="Latitude" // Penting untuk screen reader jika tidak ada label visual terpisah
+              aria-label="Latitude"
             />
             <input
               id="lon"
@@ -343,7 +351,7 @@ const AddStoryPage = () => {
               value={lon}
               onChange={(e) => setLon(e.target.value)}
               step="any"
-              aria-label="Longitude" // Penting untuk screen reader jika tidak ada label visual terpisah
+              aria-label="Longitude"
             />
           </div>
           <button
@@ -353,18 +361,23 @@ const AddStoryPage = () => {
               setLon("");
               setMapMarker(null);
             }}
-            style={{ marginTop: "10px", backgroundColor: "#6c757d" }}
+            className="btn-info" /* Menggunakan kelas .btn-info */
+            style={{ marginTop: "10px" }}
           >
             Hapus Lokasi
           </button>
         </div>
 
-        <button type="submit" disabled={loading}>
+        <button type="submit" disabled={loading} className="btn-primary">
+          {" "}
+          {/* Menggunakan kelas .btn-primary */}
           {loading ? "Menambahkan..." : "Tambah Cerita"}
         </button>
       </form>
       {error && <p className="error-message">{error}</p>}
       {success && <p className="success-message">{success}</p>}
+      {loading && <LoadingIndicator />}{" "}
+      {/* Tampilkan loading saat proses tambah cerita */}
     </div>
   );
 };

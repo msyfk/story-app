@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { getAllStories } from '../services/storyApi';
-import StoryItem from '../components/StoryItem'; 
-import LoadingIndicator from '../components/LoadingIndicator'; 
+import StoryItem from '../components/StoryItem';
+import LoadingIndicator from '../components/LoadingIndicator';
 
 const HomePage = () => {
   const [stories, setStories] = useState([]);
@@ -32,7 +32,7 @@ const HomePage = () => {
   }
 
   return (
-    <section aria-labelledby="latest-stories-heading"> 
+    <section className="homepage" aria-labelledby="latest-stories-heading">
       <h2 id="latest-stories-heading">Cerita Terbaru</h2>
       <div className="story-list">
         {stories.length > 0 ? (
@@ -40,7 +40,7 @@ const HomePage = () => {
             <StoryItem key={story.id} story={story} />
           ))
         ) : (
-          <p>Belum ada cerita yang tersedia.</p>
+          <p className="info-message">Belum ada cerita yang tersedia.</p>
         )}
       </div>
     </section>

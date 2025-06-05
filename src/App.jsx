@@ -45,20 +45,16 @@ function App() {
 
   return (
     <Router>
-      {/* Penting: Meneruskan isLoggedIn dan handleLogout ke Navbar sebagai props */}
       <Navbar isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
       <div className="container">
         <Routes>
           <Route path="/" element={<HomePage />} />
-          {/* Meneruskan setIsLoggedIn ke LoginPage agar bisa memperbarui status login App */}
           <Route
             path="/login"
             element={<LoginPage setIsLoggedIn={setIsLoggedIn} />}
           />
           <Route path="/register" element={<RegisterPage />} />
 
-          {/* Lindungi rute yang hanya bisa diakses saat login */}
-          {/* Untuk lebih kuat, bisa pakai ProtectedRoute component */}
           {isLoggedIn ? (
             <>
               <Route path="/add" element={<AddStoryPage />} />
@@ -70,8 +66,6 @@ function App() {
           null // Biarkan saja jika Anda ingin AddStoryPage menampilkan pesan sendiri
           }
 
-          {/* Tambahkan rute untuk 404 Not Found jika Anda memilikinya */}
-          {/* <Route path="*" element={<NotFoundPage />} /> */}
         </Routes>
       </div>
     </Router>

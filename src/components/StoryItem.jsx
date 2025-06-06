@@ -1,7 +1,9 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 const StoryItem = ({ story }) => {
+  const navigate = useNavigate(); // Inisialisasi useNavigate
+
   // Fungsi untuk memformat tanggal
   const formatDate = (isoString) => {
     const options = {
@@ -14,9 +16,22 @@ const StoryItem = ({ story }) => {
     return new Date(isoString).toLocaleDateString("id-ID", options);
   };
 
+  // Tangani klik untuk item cerita untuk memicu transisi tampilan
+  const handleStoryClick = (e) => {
+    e.preventDefault(); // Mencegah perilaku tautan default
+    if (document.startViewTransition) {
+      document.startViewTransition(() => {
+        navigate(`/stories/${story.id}`);
+      });
+    } else {
+      navigate(`/stories/${story.id}`);
+    }
+  };
+
   return (
     <article className="story-item" aria-labelledby={`story-title-${story.id}`}>
-      <Link to={`/stories/${story.id}`}>
+      {/* Ubah Link menjadi a tag dengan onClick untuk transisi */}
+      <a href={`/stories/${story.id}`} onClick={handleStoryClick}>
         {story.photoUrl && (
           <img
             src={story.photoUrl}
@@ -39,11 +54,10 @@ const StoryItem = ({ story }) => {
             style={{ marginTop: "auto", paddingTop: "10px", borderTop: "none" }}
           >
             {" "}
-            {/* Menggunakan story-meta di sini, dan override border-top */}
             Dibuat pada: {formatDate(story.createdAt)}
           </p>
         </div>
-      </Link>
+      </a>
     </article>
   );
 };

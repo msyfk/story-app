@@ -3,19 +3,15 @@ import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = ({ isLoggedIn, handleLogout }) => {
-  //
-  const navigate = useNavigate(); //
+  const navigate = useNavigate();
 
   useEffect(() => {
     console.log("Navbar.jsx: isLoggedIn prop received:", isLoggedIn); //
-    // Tambahkan log ini juga untuk memeriksa kondisi rendering
     if (isLoggedIn) {
-      //
       console.log(
         "Navbar.jsx: User is logged in, 'Tambah Cerita' should be visible."
       ); //
     } else {
-      //
       console.log(
         "Navbar.jsx: User is NOT logged in, 'Tambah Cerita' should be hidden."
       ); //
@@ -23,25 +19,52 @@ const Navbar = ({ isLoggedIn, handleLogout }) => {
   }, [isLoggedIn]); //
 
   const onLogoutClick = () => {
-    //
     handleLogout(); //
-    navigate("/login"); //
+    // Gunakan startViewTransition untuk navigasi logout
+    if (document.startViewTransition) {
+      document.startViewTransition(() => {
+        navigate("/login"); //
+      });
+    } else {
+      navigate("/login"); //
+    }
+  };
+
+  // Fungsi untuk menangani klik tautan dan memicu transisi tampilan
+  const handleNavLinkClick = (e, to) => {
+    e.preventDefault(); // Mencegah navigasi default
+    if (document.startViewTransition) {
+      document.startViewTransition(() => {
+        navigate(to); // Lakukan navigasi dalam transisi
+      });
+    } else {
+      navigate(to); // Fallback untuk browser yang tidak mendukung View Transitions
+    }
   };
 
   return (
     <nav className="navbar">
       <div className="navbar-brand">
-        <Link to="/">Dicoding Story App</Link>
+        {/* Gunakan onClick handler untuk brand link */}
+        <a href="/" onClick={(e) => handleNavLinkClick(e, "/")}>
+          Dicoding Story App
+        </a>
       </div>
       <ul className="navbar-links">
         <li>
-          <Link to="/">Beranda</Link>
+          {/* Gunakan onClick handler untuk Beranda link */}
+          <a href="/" onClick={(e) => handleNavLinkClick(e, "/")}>
+            Beranda
+          </a>
         </li>
 
-        {isLoggedIn ? ( //
+        {isLoggedIn ? (
           <>
             <li>
-              <Link to="/add">Tambah Cerita</Link> {/* */}
+              {/* Gunakan onClick handler untuk Tambah Cerita link */}
+              <a href="/add" onClick={(e) => handleNavLinkClick(e, "/add")}>
+                Tambah Cerita
+              </a>
             </li>
             <li>
               <button onClick={onLogoutClick} className="navbar-button">
@@ -52,10 +75,19 @@ const Navbar = ({ isLoggedIn, handleLogout }) => {
         ) : (
           <>
             <li>
-              <Link to="/login">Login</Link>
+              {/* Gunakan onClick handler untuk Login link */}
+              <a href="/login" onClick={(e) => handleNavLinkClick(e, "/login")}>
+                Login
+              </a>
             </li>
             <li>
-              <Link to="/register">Register</Link>
+              {/* Gunakan onClick handler untuk Register link */}
+              <a
+                href="/register"
+                onClick={(e) => handleNavLinkClick(e, "/register")}
+              >
+                Register
+              </a>
             </li>
           </>
         )}

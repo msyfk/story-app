@@ -623,3 +623,92 @@ fieldset::after {
     font-size: 1em;
   }
 }
+
+@keyframes slide-in-from-right {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0%);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-out-to-left {
+  from {
+    transform: translateX(0%);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+/* Menggunakan 'root' sebagai fallback umum atau untuk elemen dasar */
+::view-transition-old(root) {
+  animation: 300ms cubic-bezier(0.4, 0, 0.2, 1) forwards fade-out;
+}
+
+::view-transition-new(root) {
+  animation: 300ms cubic-bezier(0.4, 0, 0.2, 1) forwards fade-in;
+}
+
+/* Contoh untuk elemen spesifik, seperti kartu cerita di halaman utama */
+/* Anda perlu menambahkan view-transition-name ke elemen individual di JSX */
+/* Untuk transisi yang lebih kompleks, Anda dapat menargetkan elemen tertentu.
+   Untuk geser halaman penuh, menerapkan ke :root biasanya sudah cukup. */
+
+/* Contoh: Jika Anda ingin efek geser untuk navigasi */
+::view-transition-old(main-content) { /* Mengasumsikan 'main-content' adalah nama div root Anda */
+  animation: 300ms cubic-bezier(0.4, 0, 0.2, 1) forwards slide-out-to-left;
+}
+
+::view-transition-new(main-content) { /* Mengasumsikan 'main-content' adalah nama div root Anda */
+  animation: 300ms cubic-bezier(0.4, 0, 0.2, 1) forwards slide-in-from-right;
+}
+
+/* Untuk transisi terbalik (misalnya, tombol kembali atau tautan spesifik) */
+/* Anda perlu menambahkan kelas atau atribut data secara programatis ke body/html untuk memicu animasi terbalik */
+/* Contoh: document.documentElement.classList.add('reverse-transition'); */
+
+.reverse-transition::view-transition-old(main-content) {
+  animation: 300ms cubic-bezier(0.4, 0, 0.2, 1) forwards slide-out-to-right;
+}
+
+.reverse-transition::view-transition-new(main-content) {
+  animation: 300ms cubic-bezier(0.4, 0, 0.2, 1) forwards slide-in-from-left;
+}
+
+@keyframes slide-out-to-right {
+  from {
+    transform: translateX(0%);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+@keyframes slide-in-from-left {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0%);
+    opacity: 1;
+  }
+}

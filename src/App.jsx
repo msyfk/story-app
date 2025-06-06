@@ -37,13 +37,13 @@ function App() {
 
   return (
     <Router>
-      <Navbar isLoggedIn={isLoggedIn} handleLogout={handleLogout} /> {/* */}
-      <div className="container">
+      <Navbar isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
+      <div className="container" id="main-content">
         <Routes>
-          <Route path="/" element={<HomePage />} /> {/* */}
+          <Route path="/" element={<HomePage />} />
           <Route
             path="/login"
-            element={<LoginPage setIsLoggedIn={handleLoginSuccess} />} // Ganti `setIsLoggedIn` langsung dengan `handleLoginSuccess`
+            element={<LoginPage setIsLoggedIn={handleLoginSuccess} />}
           />
           <Route path="/register" element={<RegisterPage />} /> {/* */}
           {isLoggedIn ? (

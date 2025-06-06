@@ -1,10 +1,10 @@
 /* src/index.css atau src/App.css */
 
 /* --- GLOBAL STYLING --- */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
 
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   margin: 0;
   padding: 0;
   background-color: #f4f7f6; /* Warna latar belakang lembut */
@@ -71,9 +71,53 @@ body {
   color: #ffffff;
 }
 
+.skip-link {
+  /* Secara visual tersembunyi, tapi tetap dapat diakses oleh keyboard dan screen reader */
+  position: absolute; /* Tetap absolute agar tidak mengganggu layout */
+  left: -9999px; /* Pindahkan jauh ke kiri agar tidak terlihat */
+  top: auto; /* Pastikan top tidak diatur ke 0 atau nilai lain */
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0); /* Cara lama untuk menyembunyikan secara visual */
+  /* clip-path: inset(50%); */ /* Cara modern untuk menyembunyikan secara visual (alternatif yang lebih baik) */
+  white-space: nowrap; /* Mencegah teks terpotong */
+  border: 0;
+  padding: 0;
+  margin: -1px; /* Mengikuti convention untuk menyembunyikan elemen */
+  z-index: 9999; /* Pastikan di atas elemen lain saat muncul */
+
+  /* Gaya saat fokus */
+  background-color: #3498db;
+  color: white;
+  padding: 8px 15px;
+  text-decoration: none;
+  font-size: 1em;
+  font-weight: 500;
+  border-radius: 0 0 5px 5px;
+  transition: all 0.2s ease-in-out;
+}
+
+.skip-link:focus {
+  /* Saat difokuskan, tampilkan di tengah atas halaman */
+  position: fixed; /* Gunakan fixed agar selalu di viewport, bahkan saat scroll */
+  left: 50%; /* Pindahkan ke tengah horizontal */
+  top: 0; /* Tampilkan di bagian paling atas */
+  transform: translateX(-50%); /* Geser ke kiri setengah dari lebarnya sendiri untuk centering */
+  width: auto; /* Lebar otomatis sesuai konten */
+  height: auto; /* Tinggi otomatis sesuai konten */
+  overflow: visible; /* Buat terlihat */
+  clip: auto; /* Buat terlihat */
+  /* clip-path: none; */
+  text-align: center;
+  display: block; /* Pastikan mengambil ruang yang diperlukan */
+  margin: 0; /* Hapus margin negatif */
+}
+
 /* --- FORM CARD STYLING (General for Login, Register, Add Story) --- */
 /* Menggunakan .form-card yang sudah ada di RegisterPage & AddStoryPage */
-.form-card { /* Diganti dari .login-page, .register-page */
+.form-card {
+  /* Diganti dari .login-page, .register-page */
   background-color: #ffffff;
   padding: 40px;
   border-radius: 10px;
@@ -83,19 +127,22 @@ body {
   text-align: center;
 }
 
-.form-card h2 { /* Diganti dari .login-page h2, .register-page h2 */
+.form-card h2 {
+  /* Diganti dari .login-page h2, .register-page h2 */
   color: #2c3e50;
   margin-bottom: 30px;
   font-size: 2em;
   font-weight: 600;
 }
 
-.form-group { /* Diganti dari .login-page form div, .register-page form div */
+.form-group {
+  /* Diganti dari .login-page form div, .register-page form div */
   margin-bottom: 20px;
   text-align: left;
 }
 
-.form-group label { /* Diganti dari .login-page label, .register-page label */
+.form-group label {
+  /* Diganti dari .login-page label, .register-page label */
   display: block;
   margin-bottom: 8px;
   font-weight: 500;
@@ -141,7 +188,8 @@ body {
 }
 
 /* --- BUTTON STYLING (General) --- */
-.btn-primary { /* Tombol utama, misalnya untuk submit form */
+.btn-primary {
+  /* Tombol utama, misalnya untuk submit form */
   background-color: #28a745; /* Warna hijau untuk submit */
   color: white;
   padding: 12px 25px;
@@ -165,7 +213,8 @@ body {
   cursor: not-allowed;
 }
 
-.btn-secondary { /* Tombol sekunder, misalnya untuk "Buka Kamera" */
+.btn-secondary {
+  /* Tombol sekunder, misalnya untuk "Buka Kamera" */
   background-color: #3498db; /* Warna biru */
   color: white;
   padding: 10px 20px;
@@ -181,7 +230,8 @@ body {
   background-color: #217dbb;
 }
 
-.btn-danger { /* Tombol untuk aksi bahaya/hapus, misalnya "Stop Kamera" */
+.btn-danger {
+  /* Tombol untuk aksi bahaya/hapus, misalnya "Stop Kamera" */
   background-color: #dc3545; /* Merah */
   color: white;
   padding: 10px 20px;
@@ -197,7 +247,8 @@ body {
   background-color: #c82333;
 }
 
-.btn-info { /* Tombol informatif, misalnya "Hapus Lokasi" */
+.btn-info {
+  /* Tombol informatif, misalnya "Hapus Lokasi" */
   background-color: #6c757d; /* Abu-abu */
   color: white;
   padding: 10px 20px;
@@ -214,7 +265,8 @@ body {
 }
 
 /* --- ERROR & SUCCESS MESSAGE STYLING --- */
-.error-message, .success-message {
+.error-message,
+.success-message {
   margin-top: 15px;
   padding: 10px 15px;
   border-radius: 5px;
@@ -234,7 +286,6 @@ body {
   background-color: #d4edda; /* Latar belakang hijau muda */
   border: 1px solid #28a745;
 }
-
 
 /* --- LINK STYLING PADA FORM --- */
 .form-card p a {
@@ -272,36 +323,65 @@ body {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* --- HOMEPAGE STYLING --- */
+.homepage-map-container {
+  margin-bottom: 40px; /* Tambahkan margin di bawah peta */
+  padding: 20px; /* Tambahkan padding di sekitar peta */
+  background-color: #ffffff; /* Latar belakang putih untuk kontainer peta */
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); /* Shadow yang konsisten */
+}
+
+.homepage-map-container h3 {
+  text-align: center;
+  color: #2c3e50;
+  margin-bottom: 20px;
+  font-size: 1.8em;
+  font-weight: 600;
+}
+
 .story-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 25px;
-    padding: 20px 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px;
+  padding: 20px 0;
+}
+
+.story-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px;
+  padding: 20px 0;
 }
 
 /* .story-card (sekarang digunakan oleh StoryItem.jsx) */
-.story-item { /* Ganti .story-card menjadi .story-item untuk konsistensi */
-    background-color: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-    overflow: hidden;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    display: flex; /* Menggunakan flexbox untuk layout internal */
-    flex-direction: column;
-    height: 100%; /* Pastikan kartu mengisi tinggi grid item */
+.story-item {
+  /* Ganti .story-card menjadi .story-item untuk konsistensi */
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex; /* Menggunakan flexbox untuk layout internal */
+  flex-direction: column;
+  height: 100%; /* Pastikan kartu mengisi tinggi grid item */
 }
 
 .story-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+  transform: translateY(-5px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
 }
 
-.story-item a { /* Gaya untuk link di dalam story item */
+.story-item a {
+  /* Gaya untuk link di dalam story item */
   text-decoration: none;
   color: inherit;
   display: flex;
@@ -310,52 +390,54 @@ body {
 }
 
 .story-item img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    display: block;
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  display: block;
 }
 
-.story-item .content { /* Konten teks di dalam story item */
-    padding: 20px;
-    flex-grow: 1; /* Agar mengisi ruang yang tersedia */
-    display: flex;
-    flex-direction: column;
+.story-item .content {
+  /* Konten teks di dalam story item */
+  padding: 20px;
+  flex-grow: 1; /* Agar mengisi ruang yang tersedia */
+  display: flex;
+  flex-direction: column;
 }
 
 .story-item .content h3 {
-    margin-top: 0;
-    margin-bottom: 10px;
-    color: #2c3e50;
-    font-size: 1.5em;
-    font-weight: 600;
+  margin-top: 0;
+  margin-bottom: 10px;
+  color: #2c3e50;
+  font-size: 1.5em;
+  font-weight: 600;
 }
 
 .story-item .content p {
-    color: #666;
-    font-size: 0.95em;
-    margin-bottom: 15px;
-    flex-grow: 1; /* Memungkinkan deskripsi untuk mengisi ruang */
-    /* max-height: 4.5em; */ /* Batasi tinggi deskripsi, jika diinginkan */
-    overflow: hidden;
-    text-overflow: ellipsis;
+  color: #666;
+  font-size: 0.95em;
+  margin-bottom: 15px;
+  flex-grow: 1; /* Memungkinkan deskripsi untuk mengisi ruang */
+  /* max-height: 4.5em; */ /* Batasi tinggi deskripsi, jika diinginkan */
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.story-item .read-more { /* Jika Anda memiliki tombol 'Baca Selengkapnya' */
-    display: inline-block;
-    background-color: #3498db;
-    color: white;
-    padding: 8px 15px;
-    border-radius: 5px;
-    text-decoration: none;
-    font-size: 0.9em;
-    font-weight: 500;
-    transition: background-color 0.3s ease;
-    margin-top: auto; /* Mendorong tombol ke bawah */
+.story-item .read-more {
+  /* Jika Anda memiliki tombol 'Baca Selengkapnya' */
+  display: inline-block;
+  background-color: #3498db;
+  color: white;
+  padding: 8px 15px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 0.9em;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+  margin-top: auto; /* Mendorong tombol ke bawah */
 }
 
 .story-item .read-more:hover {
-    background-color: #217dbb;
+  background-color: #217dbb;
 }
 
 /* Homepage Heading */
@@ -368,43 +450,44 @@ body {
 }
 
 /* --- DETAIL STORY PAGE --- */
-.detail-story-card { /* Diganti dari .detail-story-page */
-    background-color: #ffffff;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-    margin: 50px auto;
-    max-width: 800px;
+.detail-story-card {
+  /* Diganti dari .detail-story-page */
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  margin: 50px auto;
+  max-width: 800px;
 }
 
 .detail-story-card img {
-    width: 100%;
-    height: 400px;
-    object-fit: cover;
-    border-radius: 8px;
-    margin-bottom: 25px;
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 25px;
 }
 
 .detail-story-card h2 {
-    color: #2c3e50;
-    font-size: 2.5em;
-    margin-bottom: 15px;
-    font-weight: 700;
+  color: #2c3e50;
+  font-size: 2.5em;
+  margin-bottom: 15px;
+  font-weight: 700;
 }
 
 .detail-story-card p {
-    color: #555;
-    font-size: 1.1em;
-    line-height: 1.8;
-    margin-bottom: 20px;
+  color: #555;
+  font-size: 1.1em;
+  line-height: 1.8;
+  margin-bottom: 20px;
 }
 
 .detail-story-card .story-meta {
-    font-size: 0.9em;
-    color: #888;
-    margin-top: 20px;
-    border-top: 1px solid #eee;
-    padding-top: 15px;
+  font-size: 0.9em;
+  color: #888;
+  margin-top: 20px;
+  border-top: 1px solid #eee;
+  padding-top: 15px;
 }
 
 .detail-story-card .story-meta .location {
@@ -424,8 +507,62 @@ body {
 /* Styling untuk peta di AddStoryPage */
 .add-story-page .leaflet-container {
   z-index: 1; /* Pastikan peta tidak menimpa elemen lain */
+  height: 400px; /* Atur tinggi peta */
 }
 
+.leaflet-control-container {
+  z-index: 1001; /* Pastikan kontrol peta tetap di atas */
+}
+
+.leaflet-popup-pane,
+.leaflet-tooltip-pane {
+  z-index: 1002; /* Pastikan pop-up juga di atas kontrol */
+}
+
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background-color: #3498db;
+  color: white;
+  padding: 8px;
+  z-index: 9999;
+  text-decoration: none;
+  transition: top 0.3s ease-in-out;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+fieldset {
+  border: none; /* Hilangkan garis tepi */
+  padding: 0; /* Hapus padding default fieldset jika ada */
+  margin: 0; /* Hapus margin default fieldset jika ada */
+}
+
+/* Sesuaikan legend agar terlihat seperti label biasa jika border fieldset dihilangkan */
+fieldset legend {
+  float: initial; /* Mengatur ulang float yang mungkin diterapkan browser */
+  width: auto; /* Mengatur ulang lebar */
+  padding: 0; /* Hapus padding default */
+  margin-bottom: 8px; /* Beri sedikit jarak di bawah legend */
+  font-weight: 500; /* Sesuaikan dengan gaya label Anda */
+  color: #555; /* Sesuaikan dengan gaya label Anda */
+  font-size: 1em; /* Sesuaikan ukuran font */
+}
+
+/* Clearfix untuk fieldset jika menggunakan float */
+fieldset::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Optional: Jika Anda ingin div dengan kelas form-group tetap memiliki margin-bottom */
+.form-card .form-group {
+    margin-bottom: 20px;
+}
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
@@ -441,9 +578,10 @@ body {
     margin: 5px 10px;
   }
   .story-list {
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   }
-  .form-card, .detail-story-card {
+  .form-card,
+  .detail-story-card {
     padding: 30px;
     margin: 30px 15px; /* Sedikit margin samping untuk layar kecil */
   }
@@ -469,7 +607,7 @@ body {
     font-size: 1.8em;
   }
   .detail-story-card h2 {
-      font-size: 2em;
+    font-size: 2em;
   }
   .form-card input[type="email"],
   .form-card input[type="password"],
@@ -477,7 +615,10 @@ body {
   .form-card textarea {
     width: calc(100% - 20px); /* Adjust for smaller padding */
   }
-  .btn-primary, .btn-secondary, .btn-danger, .btn-info {
+  .btn-primary,
+  .btn-secondary,
+  .btn-danger,
+  .btn-info {
     padding: 10px 20px;
     font-size: 1em;
   }

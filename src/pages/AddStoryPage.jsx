@@ -60,8 +60,10 @@ const AddStoryPage = () => {
           ></textarea>
         </div>
 
-        <div className="form-group">
-          <label htmlFor="photo-file-input">Foto Cerita</label>
+        <fieldset className="form-group">
+          {" "}
+          {/* Gunakan fieldset */}
+          <legend>Foto Cerita</legend> {/* Gunakan legend */}
           {isCameraActive && (
             <div
               style={{
@@ -141,7 +143,6 @@ const AddStoryPage = () => {
                   type="button"
                   onClick={() => {
                     setPhoto(null);
-                    // setError(null);
                   }}
                   className="btn-info"
                 >
@@ -151,6 +152,10 @@ const AddStoryPage = () => {
             </div>
           )}
           <p style={{ textAlign: "center", margin: "15px 0" }}>atau</p>
+          <label htmlFor="photo-file-input" style={{ display: "none" }}>
+            Unggah Foto dari Perangkat
+          </label>{" "}
+          {/* Label ini untuk input file di bawah */}
           <input
             id="photo-file-input"
             type="file"
@@ -159,10 +164,13 @@ const AddStoryPage = () => {
             required={!photo}
             style={{ display: "block" }}
           />
-        </div>
+        </fieldset>
 
-        <div className="form-group">
-          <label>Pilih Lokasi di Peta (Opsional)</label>
+        <fieldset className="form-group">
+          {" "}
+          {/* Gunakan fieldset */}
+          <legend>Pilih Lokasi di Peta (Opsional)</legend>{" "}
+          {/* Gunakan legend */}
           <MapContainer
             center={defaultMapCenter}
             zoom={10}
@@ -190,6 +198,10 @@ const AddStoryPage = () => {
             )}
           </MapContainer>
           <div style={{ display: "flex", gap: "10px" }}>
+            <label htmlFor="lat" style={{ display: "none" }}>
+              Latitude
+            </label>{" "}
+            {/* Label tersembunyi untuk aksesibilitas */}
             <input
               id="lat"
               type="number"
@@ -199,6 +211,10 @@ const AddStoryPage = () => {
               step="any"
               aria-label="Latitude"
             />
+            <label htmlFor="lon" style={{ display: "none" }}>
+              Longitude
+            </label>{" "}
+            {/* Label tersembunyi untuk aksesibilitas */}
             <input
               id="lon"
               type="number"
@@ -217,7 +233,7 @@ const AddStoryPage = () => {
           >
             Hapus Lokasi
           </button>
-        </div>
+        </fieldset>
 
         <button type="submit" disabled={loading} className="btn-primary">
           {loading ? "Menambahkan..." : "Tambah Cerita"}

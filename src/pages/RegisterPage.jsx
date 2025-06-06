@@ -1,39 +1,29 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { register } from "../services/authApi";
-import LoadingIndicator from "../components/LoadingIndicator"; // Import LoadingIndicator
+import useRegisterPresenter from "../presenters/RegisterPresenter"; // Import presenter
+import LoadingIndicator from "../components/LoadingIndicator";
 
 const RegisterPage = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
   const navigate = useNavigate();
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError(null);
-    setSuccess(null);
-    try {
-      await register(name, email, password);
-      setSuccess("Registrasi berhasil! Silakan login.");
-      setTimeout(() => {
-        navigate("/login");
-      }, 2000);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const {
+    name,
+    setName,
+    email,
+    setEmail,
+    password,
+    setPassword,
+    loading,
+    error,
+    success,
+    handleRegister,
+  } = useRegisterPresenter(navigate); // Panggil presenter
 
   return (
     <div className="form-card">
       <h2>Register</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleRegister}>
+        {" "}
+        {/* Gunakan handleRegister dari presenter */}
         <div className="form-group">
           <label htmlFor="name">Nama</label>
           <input
@@ -68,8 +58,6 @@ const RegisterPage = () => {
           />
         </div>
         <button type="submit" disabled={loading} className="btn-primary">
-          {" "}
-          {/* Menggunakan kelas .btn-primary */}
           {loading ? "Mendaftar..." : "Daftar"}
         </button>
       </form>
@@ -78,8 +66,7 @@ const RegisterPage = () => {
       <p style={{ textAlign: "center", marginTop: "20px" }}>
         Sudah punya akun? <Link to="/login">Login di sini</Link>
       </p>
-      {loading && <LoadingIndicator />}{" "}
-      {/* Tampilkan loading saat proses register */}
+      {loading && <LoadingIndicator />}
     </div>
   );
 };

@@ -1,7 +1,7 @@
 // src/presenters/LoginPresenter.js
 import { useState } from "react";
-import { login } from "../services/storyApi";
-import { saveToken } from "../utils/auth";
+import { login } from "../services/authApi"; // Sudah diperbaiki sebelumnya
+import { setToken } from "../utils/auth"; // PERBAIKAN DI SINI
 
 const useLoginPresenter = (onLoginSuccess, navigate) => {
   const [email, setEmail] = useState("");
@@ -14,8 +14,8 @@ const useLoginPresenter = (onLoginSuccess, navigate) => {
     setLoading(true);
     setError(null);
     try {
-      const result = await login(email, password); // Model Interaction
-      saveToken(result.token); // Model Interaction
+      const receivedToken = await login(email, password); // Model Interaction
+      setToken(receivedToken); // PERBAIKAN DI SINI: Gunakan setToken dan langsung passing receivedToken
       onLoginSuccess();
       navigate("/"); // View navigation
     } catch (err) {

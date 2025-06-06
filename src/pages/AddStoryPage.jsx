@@ -1,13 +1,12 @@
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
-import { addStory } from "../services/storyApi";
-import { getToken } from "../utils/auth";
+import useAddStoryPresenter from "../presenters/AddStoryPresenter"; // Import presenter
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-import LoadingIndicator from "../components/LoadingIndicator"; // Import LoadingIndicator
+import LoadingIndicator from "../components/LoadingIndicator";
 
-// Fix marker icon issue for Leaflet
+// Fix marker icon issue with Webpack
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl:
@@ -17,176 +16,39 @@ L.Icon.Default.mergeOptions({
 });
 
 const AddStoryPage = () => {
-  const [description, setDescription] = useState("");
-  const [photo, setPhoto] = useState(null);
-  const [lat, setLat] = useState("");
-  const [lon, setLon] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
   const navigate = useNavigate();
-  const token = getToken();
-
-  const videoRef = useRef(null);
-  const canvasRef = useRef(null);
-  const streamRef = useRef(null);
-  const [isCameraActive, setIsCameraActive] = useState(false);
-
-  const mapRef = useRef(null);
-  const [mapMarker, setMapMarker] = useState(null);
   const defaultMapCenter = [-6.2, 106.8]; // Jakarta
 
-  const stopCamera = useCallback(() => {
-    console.log("stopCamera called.");
-    if (streamRef.current) {
-      streamRef.current.getTracks().forEach((track) => track.stop());
-      streamRef.current = null;
-    }
-    if (videoRef.current) {
-      videoRef.current.srcObject = null;
-    }
-    setIsCameraActive(false);
-  }, []);
-
-  const startCamera = () => {
-    setPhoto(null);
-    setIsCameraActive(true);
-    setError(null);
-  };
-
-  useEffect(() => {
-    console.log(
-      "useEffect triggered. isCameraActive:",
-      isCameraActive,
-      "videoRef.current:",
-      videoRef.current
-    );
-
-    const initializeCamera = async () => {
-      if (!videoRef.current) {
-        console.warn("videoRef.current is null, cannot initialize camera.");
-        return;
-      }
-
-      if (streamRef.current) {
-        console.warn("Stream already active.");
-        return;
-      }
-
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          video: true,
-        });
-        streamRef.current = stream;
-        videoRef.current.srcObject = stream;
-        videoRef.current.play();
-        console.log("Camera stream attached successfully.");
-      } catch (err) {
-        console.error("Error accessing camera:", err);
-        setError("Gagal mengakses kamera. Pastikan izin kamera diberikan.");
-        setIsCameraActive(false);
-      }
-    };
-
-    if (isCameraActive) {
-      initializeCamera();
-    }
-
-    return () => {
-      if (streamRef.current) {
-        stopCamera();
-      }
-    };
-  }, [isCameraActive, stopCamera]);
-
-  const takePhoto = () => {
-    if (videoRef.current && canvasRef.current) {
-      const video = videoRef.current;
-      const canvas = canvasRef.current;
-      const context = canvas.getContext("2d");
-
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-
-      context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-      canvas.toBlob((blob) => {
-        setPhoto(blob);
-        stopCamera();
-      }, "image/jpeg");
-    } else {
-      setError("Video stream tidak tersedia untuk mengambil foto.");
-      console.error("VideoRef or CanvasRef is null when trying to take photo.");
-    }
-  };
-
-  const handleFileInputChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setPhoto(file);
-      stopCamera();
-    }
-  };
-
-  const handleMapClick = (e) => {
-    const { lat, lng } = e.latlng;
-    setLat(lat.toFixed(6));
-    setLon(lng.toFixed(6));
-    setMapMarker([lat, lng]);
-  };
-
-  useEffect(() => {
-    if (!lat && !lon) {
-      setMapMarker(null);
-    }
-  }, [lat, lon]);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError(null);
-    setSuccess(null);
-
-    if (!token) {
-      setError("Anda harus login untuk menambah cerita.");
-      setLoading(false);
-      return;
-    }
-    if (!photo) {
-      setError("Foto wajib diunggah.");
-      setLoading(false);
-      return;
-    }
-
-    try {
-      const parsedLat = lat ? parseFloat(lat) : undefined;
-      const parsedLon = lon ? parseFloat(lon) : undefined;
-
-      await addStory(description, photo, parsedLat, parsedLon, token);
-      setSuccess("Cerita berhasil ditambahkan!");
-      setDescription("");
-      setPhoto(null);
-      setLat("");
-      setLon("");
-      setMapMarker(null);
-
-      setTimeout(() => navigate("/"), 2000);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const {
+    description,
+    setDescription,
+    photo,
+    setPhoto,
+    lat,
+    setLat,
+    lon,
+    setLon,
+    loading,
+    error,
+    success,
+    videoRef,
+    canvasRef,
+    isCameraActive,
+    startCamera,
+    takePhoto,
+    stopCamera,
+    handleFileInputChange,
+    handleMapClick,
+    handleClearLocation,
+    mapMarker,
+    handleSubmit,
+  } = useAddStoryPresenter(navigate); // Panggil presenter
 
   return (
     <div className="form-card">
-      {" "}
-      {/* Menggunakan kelas .form-card */}
       <h2>Tambah Cerita Baru</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          {" "}
-          {/* Menggunakan kelas .form-group */}
           <label htmlFor="description">Deskripsi Cerita</label>
           <textarea
             id="description"
@@ -199,8 +61,6 @@ const AddStoryPage = () => {
         </div>
 
         <div className="form-group">
-          {" "}
-          {/* Menggunakan kelas .form-group */}
           <label htmlFor="photo-file-input">Foto Cerita</label>
           {isCameraActive && (
             <div
@@ -229,7 +89,7 @@ const AddStoryPage = () => {
                   display: "flex",
                   justifyContent: "center",
                   padding: "10px",
-                  gap: "10px" /* Menambahkan jarak antar tombol */,
+                  gap: "10px",
                 }}
               >
                 <button
@@ -273,7 +133,7 @@ const AddStoryPage = () => {
                   maxHeight: "200px",
                   objectFit: "contain",
                   borderRadius: "8px",
-                  marginBottom: "10px" /* Jarak dari tombol */,
+                  marginBottom: "10px",
                 }}
               />
               <div>
@@ -281,9 +141,9 @@ const AddStoryPage = () => {
                   type="button"
                   onClick={() => {
                     setPhoto(null);
-                    setError(null);
+                    // setError(null);
                   }}
-                  className="btn-info" /* Menggunakan btn-info atau btn-secondary */
+                  className="btn-info"
                 >
                   Ganti Gambar
                 </button>
@@ -297,13 +157,11 @@ const AddStoryPage = () => {
             accept="image/*"
             onChange={handleFileInputChange}
             required={!photo}
-            style={{ display: "block" }} // Pastikan input file tetap blok
+            style={{ display: "block" }}
           />
         </div>
 
         <div className="form-group">
-          {" "}
-          {/* Menggunakan kelas .form-group */}
           <label>Pilih Lokasi di Peta (Opsional)</label>
           <MapContainer
             center={defaultMapCenter}
@@ -314,9 +172,6 @@ const AddStoryPage = () => {
               width: "100%",
               borderRadius: "8px",
               marginBottom: "15px",
-            }}
-            whenCreated={(mapInstance) => {
-              mapRef.current = mapInstance;
             }}
             onClick={handleMapClick}
           >
@@ -356,12 +211,8 @@ const AddStoryPage = () => {
           </div>
           <button
             type="button"
-            onClick={() => {
-              setLat("");
-              setLon("");
-              setMapMarker(null);
-            }}
-            className="btn-info" /* Menggunakan kelas .btn-info */
+            onClick={handleClearLocation}
+            className="btn-info"
             style={{ marginTop: "10px" }}
           >
             Hapus Lokasi
@@ -369,15 +220,12 @@ const AddStoryPage = () => {
         </div>
 
         <button type="submit" disabled={loading} className="btn-primary">
-          {" "}
-          {/* Menggunakan kelas .btn-primary */}
           {loading ? "Menambahkan..." : "Tambah Cerita"}
         </button>
       </form>
       {error && <p className="error-message">{error}</p>}
       {success && <p className="success-message">{success}</p>}
-      {loading && <LoadingIndicator />}{" "}
-      {/* Tampilkan loading saat proses tambah cerita */}
+      {loading && <LoadingIndicator />}
     </div>
   );
 };

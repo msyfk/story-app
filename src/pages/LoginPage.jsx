@@ -1,6 +1,7 @@
+// src/pages/LoginPage.jsx
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import useLoginPresenter from "../presenters/LoginPresenter"; // Import presenter
+import useLoginPresenter from "../presenters/LoginPresenter";
 import LoadingIndicator from "../components/LoadingIndicator";
 
 const LoginPage = ({ setIsLoggedIn }) => {
@@ -13,14 +14,12 @@ const LoginPage = ({ setIsLoggedIn }) => {
     loading,
     error,
     handleLogin,
-  } = useLoginPresenter(setIsLoggedIn, navigate); // Panggil presenter
+  } = useLoginPresenter(setIsLoggedIn, navigate);
 
   return (
     <div className="form-card">
       <h2>Login</h2>
       <form onSubmit={handleLogin}>
-        {" "}
-        {/* Gunakan handleLogin dari presenter */}
         <div className="form-group">
           <label htmlFor="email">Email</label>
           <input

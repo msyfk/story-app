@@ -1,31 +1,35 @@
 // src/presenters/LoginPresenter.js
 import { useState } from "react";
-import { login } from "../services/authApi"; // Sudah diperbaiki sebelumnya
-import { setToken } from "../utils/auth"; // PERBAIKAN DI SINI
+import { login } from "../services/authApi";
+import { setToken } from "../utils/auth";
 
 const useLoginPresenter = (onLoginSuccess, navigate) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  //
+  const [email, setEmail] = useState(""); //
+  const [password, setPassword] = useState(""); //
+  const [loading, setLoading] = useState(false); //
+  const [error, setError] = useState(null); //
 
   const handleLogin = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError(null);
+    //
+    e.preventDefault(); //
+    setLoading(true); //
+    setError(null); //
     try {
-      const receivedToken = await login(email, password); // Model Interaction
-      setToken(receivedToken); // PERBAIKAN DI SINI: Gunakan setToken dan langsung passing receivedToken
-      onLoginSuccess();
-      navigate("/"); // View navigation
+      const receivedToken = await login(email, password); //
+      setToken(receivedToken); //
+      console.log(
+        "LoginPresenter: Token set and onLoginSuccess will be called."
+      ); // Tambahkan ini
+      onLoginSuccess(); // <-- Ini yang akan memanggil setIsLoggedIn(true) di App.jsx
+      navigate("/"); //
     } catch (err) {
-      setError(err.message);
+      setError(err.message); //
     } finally {
-      setLoading(false);
+      setLoading(false); //
     }
   };
 
-  // Expose state and handlers to the View
   return {
     email,
     setEmail,

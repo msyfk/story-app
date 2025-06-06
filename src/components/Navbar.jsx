@@ -1,17 +1,31 @@
 // src/components/Navbar.jsx
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-// Tidak perlu import logout dari '../utils/auth' di sini lagi,
-// karena handleLogout akan diterima dari props (dari App.jsx)
 
-// Menerima isLoggedIn dan handleLogout dari App.jsx sebagai props
 const Navbar = ({ isLoggedIn, handleLogout }) => {
-  const navigate = useNavigate();
+  //
+  const navigate = useNavigate(); //
+
+  useEffect(() => {
+    console.log("Navbar.jsx: isLoggedIn prop received:", isLoggedIn); //
+    // Tambahkan log ini juga untuk memeriksa kondisi rendering
+    if (isLoggedIn) {
+      //
+      console.log(
+        "Navbar.jsx: User is logged in, 'Tambah Cerita' should be visible."
+      ); //
+    } else {
+      //
+      console.log(
+        "Navbar.jsx: User is NOT logged in, 'Tambah Cerita' should be hidden."
+      ); //
+    }
+  }, [isLoggedIn]); //
 
   const onLogoutClick = () => {
-    // Ganti nama fungsi agar tidak bentrok dengan handleLogout
-    handleLogout(); // Panggil fungsi logout yang diterima dari App
-    navigate("/login"); // Redirect ke halaman login setelah logout
+    //
+    handleLogout(); //
+    navigate("/login"); //
   };
 
   return (
@@ -24,11 +38,10 @@ const Navbar = ({ isLoggedIn, handleLogout }) => {
           <Link to="/">Beranda</Link>
         </li>
 
-        {/* Logika Kondisional PENTING di sini */}
-        {isLoggedIn ? ( // Jika pengguna sudah login
+        {isLoggedIn ? ( //
           <>
             <li>
-              <Link to="/add">Tambah Cerita</Link>
+              <Link to="/add">Tambah Cerita</Link> {/* */}
             </li>
             <li>
               <button onClick={onLogoutClick} className="navbar-button">
@@ -37,7 +50,6 @@ const Navbar = ({ isLoggedIn, handleLogout }) => {
             </li>
           </>
         ) : (
-          // Jika pengguna belum login
           <>
             <li>
               <Link to="/login">Login</Link>

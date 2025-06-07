@@ -1,15 +1,18 @@
 import { getStoryDetail } from "../services/storyApi.js"; //
-import { createLoadingIndicator } from "../components/LoadingIndicator.js"; //
-import { formatDistanceToNow } from "date-fns"; //
-import { id } from "date-fns/locale"; //
+import { createLoadingIndicator } from "../components/LoadingIndicator.js";
 
 // Fungsi pembantu untuk format tanggal (dari presenter asli)
-const formatDateDistance = (isoString) => {
+const formatDate = (isoString) => {
   if (!isoString) return "";
-  return formatDistanceToNow(new Date(isoString), {
-    addSuffix: true,
-    locale: id,
-  });
+  const date = new Date(isoString);
+  const options = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  };
+  return date.toLocaleDateString("id-ID", options);
 };
 
 export const renderDetailStoryPage = async (parentElement, storyId) => {
@@ -54,7 +57,7 @@ export const renderDetailStoryPage = async (parentElement, storyId) => {
     article.appendChild(metaDiv);
 
     const createdAtP = document.createElement("p");
-    createdAtP.textContent = `Dibuat: ${formatDateDistance(story.createdAt)}`; //
+    createdAtP.textContent = `Dibuat: ${formatDate(story.createdAt)}`; //
     metaDiv.appendChild(createdAtP);
 
     if (story.lat && story.lon) {

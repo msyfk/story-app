@@ -1,7 +1,6 @@
 import { getAllStories } from "../services/storyApi.js"; //
 import { createStoryItem } from "../components/StoryItem.js"; //
-import { createLoadingIndicator } from "../components/LoadingIndicator.js"; //
-import { createStoryMap, initMap } from "../components/StoryMap.js"; //
+import { createLoadingIndicator } from "../components/LoadingIndicator.js";
 
 export const renderHomePage = async (parentElement) => {
   parentElement.innerHTML = ""; // Hapus konten yang ada
@@ -29,13 +28,9 @@ export const renderHomePage = async (parentElement) => {
     mapContainerDiv.appendChild(mapHeading);
 
     if (stories.length > 0) {
-      const mapDiv = createStoryMap(stories); // Dapatkan div untuk peta
-      mapContainerDiv.appendChild(mapDiv);
       // Inisialisasi peta Leaflet setelah div peta ada di DOM
       // Gunakan timeout untuk memastikan DOM benar-benar siap, meskipun tidak terlalu diperlukan dengan penambahan langsung
-      setTimeout(() => {
-        initMap("story-map-container", stories); // Lewatkan ID dan cerita
-      }, 0);
+      
     } else {
       const infoMessage = document.createElement("p");
       infoMessage.className = "info-message"; //

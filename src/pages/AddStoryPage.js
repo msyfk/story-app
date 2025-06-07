@@ -1,8 +1,6 @@
 import { addStory } from "../services/storyApi.js"; //
 import { getToken } from "../utils/auth.js"; //
 import { createLoadingIndicator } from "../components/LoadingIndicator.js"; //
-import "leaflet/dist/leaflet.css";
-import L from "leaflet";
 
 // Memperbaiki masalah ikon marker dengan Webpack (masih relevan)
 delete L.Icon.Default.prototype._getIconUrl; //

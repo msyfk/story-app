@@ -1,6 +1,6 @@
-import { addStory } from "../services/storyApi.js"; //
-import { getToken } from "../utils/auth.js"; //
-import { createLoadingIndicator } from "../components/LoadingIndicator.js"; //
+import { addStory } from "../services/storyApi.js";
+import { getToken } from "../utils/auth.js";
+import { createLoadingIndicator } from "../components/LoadingIndicator.js";
 
 let currentStream = null; // Untuk menampung aliran media
 let map = null; // Untuk menampung instance peta Leaflet
@@ -29,14 +29,15 @@ const stopCamera = () => {
 };
 
 const startCamera = async () => {
-  const cameraVideoContainer = document.querySelector("#camera-video-container");
+  const cameraVideoContainer = document.querySelector(
+    "#camera-video-container"
+  );
   if (!cameraVideoContainer) return;
 
-  // Hapus pratinjau foto yang ada
   const photoPreview = document.querySelector("#photo-preview-container");
   if (photoPreview) photoPreview.innerHTML = "";
   const fileInput = document.getElementById("photo-file-input");
-  if (fileInput) fileInput.value = ""; // Kosongkan input file
+  if (fileInput) fileInput.value = "";
 
   cameraVideoContainer.innerHTML = `
         <video id="camera-video" autoplay playsInline muted
@@ -64,16 +65,16 @@ const startCamera = async () => {
   } catch (err) {
     console.error("Gagal mengakses kamera:", err);
     const errorMessage = document.createElement("p");
-    errorMessage.className = "error-message"; //
+    errorMessage.className = "error-message";
     errorMessage.textContent =
-      "Gagal mengakses kamera. Pastikan izin kamera diberikan."; //
-    cameraVideoContainer.innerHTML = ""; // Hapus elemen kamera
+      "Gagal mengakses kamera. Pastikan izin kamera diberikan.";
+    cameraVideoContainer.innerHTML = "";
     cameraVideoContainer.appendChild(errorMessage);
-    stopCamera(); // Pastikan aliran dihentikan
+    stopCamera();
   }
 };
 
-let capturedPhoto = null; // Variabel global untuk menyimpan blob/file foto yang diambil
+let capturedPhoto = null;
 
 const takePhoto = () => {
   const videoElement = document.getElementById("camera-video");
@@ -82,10 +83,8 @@ const takePhoto = () => {
     const context = canvasElement.getContext("2d");
     canvasElement.width = videoElement.videoWidth;
     canvasElement.height = videoElement.videoHeight;
-
-    context.translate(canvasElement.width, 0); // Pindahkan titik awal ke kanan
-    context.scale(-1, 1); // Membalikkan gambar secara horizontal
-
+    context.translate(canvasElement.width, 0);
+    context.scale(-1, 1);
     context.drawImage(
       videoElement,
       0,
@@ -93,15 +92,15 @@ const takePhoto = () => {
       canvasElement.width,
       canvasElement.height
     );
-    context.transform(1, 0, 0, 1, 0, 0); // Reset transformasi
+    context.transform(1, 0, 0, 1, 0, 0);
 
     canvasElement.toBlob((blob) => {
       capturedPhoto = blob;
-      stopCamera(); // Hentikan kamera setelah mengambil foto
-      renderPhotoPreview(); // Tampilkan pratinjau
+      stopCamera();
+      renderPhotoPreview();
     }, "image/jpeg");
   } else {
-    console.error("Video stream tidak tersedia untuk mengambil foto."); //
+    console.error("Video stream tidak tersedia untuk mengambil foto.");
   }
 };
 
@@ -110,17 +109,16 @@ const renderPhotoPreview = () => {
     "#photo-preview-container"
   );
   if (!photoPreviewContainer) return;
-
-  photoPreviewContainer.innerHTML = ""; // Hapus pratinjau sebelumnya
+  photoPreviewContainer.innerHTML = "";
 
   if (capturedPhoto) {
     photoPreviewContainer.style.display = "flex";
-    photoPreviewContainer.style.flexDirection = "column"; // Susun item secara vertikal
-    photoPreviewContainer.style.alignItems = "center"; // Tengahkan item secara horizontal (gambar dan tombol)
+    photoPreviewContainer.style.flexDirection = "column";
+    photoPreviewContainer.style.alignItems = "center";
     photoPreviewContainer.style.width = "100%";
 
     const previewP = document.createElement("p");
-    previewP.textContent = "Pratinjau Gambar:"; //
+    previewP.textContent = "Pratinjau Gambar:";
     previewP.style.marginTop = "15px";
     previewP.style.textAlign = "center";
     photoPreviewContainer.appendChild(previewP);
@@ -138,19 +136,19 @@ const renderPhotoPreview = () => {
     const buttonDiv = document.createElement("div");
     const changeImageBtn = document.createElement("button");
     changeImageBtn.type = "button";
-    changeImageBtn.className = "btn-info"; //
-    changeImageBtn.textContent = "Ganti Gambar"; //
+    changeImageBtn.className = "btn-info";
+    changeImageBtn.textContent = "Ganti Gambar";
     changeImageBtn.addEventListener("click", () => {
-      capturedPhoto = null; // Hapus foto yang diambil
-      photoPreviewContainer.innerHTML = ""; // Hapus pratinjau
+      capturedPhoto = null;
+      photoPreviewContainer.innerHTML = "";
       const startCameraBtnContainer =
         document.querySelector("#camera-controls");
       if (startCameraBtnContainer) {
         startCameraBtnContainer.innerHTML = `
-                    <button type="button" id="start-camera-btn" class="btn-secondary">
-                        Buka Kamera
-                    </button>
-                `;
+            <button type="button" id="start-camera-btn" class="btn-secondary">
+                Buka Kamera
+            </button>
+        `;
         document
           .getElementById("start-camera-btn")
           .addEventListener("click", startCamera);
@@ -162,7 +160,7 @@ const renderPhotoPreview = () => {
 };
 
 export const renderAddStoryPage = (parentElement, navigateTo) => {
-  parentElement.innerHTML = ""; // Hapus konten yang ada
+  parentElement.innerHTML = "";
 
   const formCard = document.createElement("div");
   formCard.className = "form-card";
@@ -175,7 +173,6 @@ export const renderAddStoryPage = (parentElement, navigateTo) => {
   const form = document.createElement("form");
   formCard.appendChild(form);
 
-  // Description (kode yang ada)
   const descriptionGroup = document.createElement("div");
   descriptionGroup.className = "form-group";
   const descriptionLabel = document.createElement("label");
@@ -190,7 +187,6 @@ export const renderAddStoryPage = (parentElement, navigateTo) => {
   descriptionGroup.appendChild(descriptionTextarea);
   form.appendChild(descriptionGroup);
 
-  // Photo Section (kode yang ada)
   const photoFieldset = document.createElement("fieldset");
   photoFieldset.className = "form-group";
   const photoLegend = document.createElement("legend");
@@ -239,7 +235,66 @@ export const renderAddStoryPage = (parentElement, navigateTo) => {
   photoFieldset.appendChild(fileInput);
   form.appendChild(photoFieldset);
 
-  // Map Section (kode yang ada)
+  // === PENAMBAHAN BAGIAN LOKASI YANG HILANG ===
+  const locationFieldset = document.createElement("fieldset");
+  locationFieldset.className = "form-group";
+  const locationLegend = document.createElement("legend");
+  locationLegend.textContent = "Lokasi Cerita (Opsional)";
+  locationFieldset.appendChild(locationLegend);
+
+  const mapDiv = document.createElement("div");
+  mapDiv.id = "add-story-map";
+  mapDiv.style.height = "300px";
+  mapDiv.style.width = "100%";
+  mapDiv.style.marginBottom = "15px";
+  mapDiv.style.borderRadius = "8px";
+  mapDiv.style.zIndex = "0";
+  locationFieldset.appendChild(mapDiv);
+
+  const latLonGroup = document.createElement("div");
+  latLonGroup.style.display = "flex";
+  latLonGroup.style.gap = "10px";
+  latLonGroup.style.marginBottom = "10px";
+
+  const latGroup = document.createElement("div");
+  latGroup.style.flex = "1";
+  const latLabel = document.createElement("label");
+  latLabel.htmlFor = "lat-input";
+  latLabel.textContent = "Latitude";
+  const latInput = document.createElement("input"); // Variabel didefinisikan di sini
+  latInput.type = "text";
+  latInput.id = "lat-input";
+  latInput.placeholder = "Klik peta untuk mengisi";
+  latGroup.appendChild(latLabel);
+  latGroup.appendChild(latInput);
+  latLonGroup.appendChild(latGroup);
+
+  const lonGroup = document.createElement("div");
+  lonGroup.style.flex = "1";
+  const lonLabel = document.createElement("label");
+  lonLabel.htmlFor = "lon-input";
+  lonLabel.textContent = "Longitude";
+  const lonInput = document.createElement("input"); // Variabel didefinisikan di sini
+  lonInput.type = "text";
+  lonInput.id = "lon-input";
+  lonInput.placeholder = "Klik peta untuk mengisi";
+  lonGroup.appendChild(lonLabel);
+  lonGroup.appendChild(lonInput);
+  latLonGroup.appendChild(lonGroup);
+
+  locationFieldset.appendChild(latLonGroup);
+
+  const clearLocationBtn = document.createElement("button"); // Variabel didefinisikan di sini
+  clearLocationBtn.type = "button";
+  clearLocationBtn.id = "clear-location-btn";
+  clearLocationBtn.className = "btn-info";
+  clearLocationBtn.textContent = "Hapus Lokasi";
+  clearLocationBtn.style.width = "auto";
+  locationFieldset.appendChild(clearLocationBtn);
+
+  form.appendChild(locationFieldset);
+  // === AKHIR DARI BAGIAN YANG DIPERBAIKI ===
+
   const submitButton = document.createElement("button");
   submitButton.type = "submit";
   submitButton.className = "btn-primary";
@@ -250,17 +305,13 @@ export const renderAddStoryPage = (parentElement, navigateTo) => {
   let successMessageElement = null;
   let loadingIndicatorElement = null;
 
-  // Leaflet map initialization
-  const defaultMapCenter = [-6.2, 106.8]; // Jakarta
+  const defaultMapCenter = [-6.2, 106.8];
 
   const initializeMap = () => {
-    // *** SOLUSI: Hancurkan peta yang ada jika sudah diinisialisasi ***
     if (map && map.remove) {
-      // Pastikan map bukan null dan memiliki metode remove()
-      map.remove(); // Hapus instance peta yang ada
-      map = null; // Setel ulang variabel map ke null setelah dihapus
-      marker = null; // Setel ulang marker juga
-      console.log("Existing map on add-story-map removed.");
+      map.remove();
+      map = null;
+      marker = null;
     }
     map = L.map("add-story-map").setView(defaultMapCenter, 10);
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -288,39 +339,27 @@ export const renderAddStoryPage = (parentElement, navigateTo) => {
     });
   };
 
-  // Set initial values for lat/lon if already available (e.g. from previous session)
   latInput.addEventListener("input", () => {
     const latVal = parseFloat(latInput.value);
     const lonVal = parseFloat(lonInput.value);
     if (!isNaN(latVal) && !isNaN(lonVal) && map) {
-      // Tambahkan pemeriksaan `map`
       if (marker) {
         marker.setLatLng([latVal, lonVal]);
       } else {
-        marker = L.marker([latVal, lonVal])
-          .addTo(map)
-          .bindPopup(
-            `Lokasi yang Anda pilih: <br/>Lat: ${latVal} <br/>Lon: ${lonVal}`
-          )
-          .openPopup();
+        marker = L.marker([latVal, lonVal]).addTo(map);
       }
       map.setView([latVal, lonVal], 10);
     }
   });
+
   lonInput.addEventListener("input", () => {
     const latVal = parseFloat(latInput.value);
     const lonVal = parseFloat(lonInput.value);
     if (!isNaN(latVal) && !isNaN(lonVal) && map) {
-      // Tambahkan pemeriksaan `map`
       if (marker) {
         marker.setLatLng([latVal, lonVal]);
       } else {
-        marker = L.marker([latVal, lonVal])
-          .addTo(map)
-          .bindPopup(
-            `Lokasi yang Anda pilih: <br/>Lat: ${latVal} <br/>Lon: ${lonVal}`
-          )
-          .openPopup();
+        marker = L.marker([latVal, lonVal]).addTo(map);
       }
       map.setView([latVal, lonVal], 10);
     }
@@ -334,19 +373,15 @@ export const renderAddStoryPage = (parentElement, navigateTo) => {
       marker = null;
     }
     if (map) {
-      // Tambahkan pemeriksaan `map`
       map.setView(defaultMapCenter, 10);
     }
   });
 
-  // Inisialisasi peta setelah elemen ditambahkan ke DOM
-  // Pastikan inisialisasi hanya terjadi sekali saat halaman dimuat
   setTimeout(() => {
-    // Periksa apakah elemen peta sudah ada di DOM sebelum menginisialisasi
     if (document.getElementById("add-story-map")) {
       initializeMap();
     }
-  }, 0); // Gunakan setTimeout untuk memastikan mapDiv ada di DOM
+  }, 0);
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -357,22 +392,17 @@ export const renderAddStoryPage = (parentElement, navigateTo) => {
     }
     submitButton.disabled = true;
 
-    if (errorMessageElement) {
-      errorMessageElement.remove();
-      errorMessageElement = null;
-    }
-    if (successMessageElement) {
-      successMessageElement.remove();
-      successMessageElement = null;
-    }
+    if (errorMessageElement) errorMessageElement.remove();
+    if (successMessageElement) successMessageElement.remove();
+    errorMessageElement = null;
+    successMessageElement = null;
 
-    const token = getToken(); //
+    const token = getToken();
     if (!token) {
-      //
       errorMessageElement = document.createElement("p");
-      errorMessageElement.className = "error-message"; //
+      errorMessageElement.className = "error-message";
       errorMessageElement.textContent =
-        "Anda harus login untuk menambah cerita."; //
+        "Anda harus login untuk menambah cerita.";
       formCard.appendChild(errorMessageElement);
       submitButton.disabled = false;
       loadingIndicatorElement.remove();
@@ -381,10 +411,9 @@ export const renderAddStoryPage = (parentElement, navigateTo) => {
     }
 
     if (!capturedPhoto) {
-      //
       errorMessageElement = document.createElement("p");
-      errorMessageElement.className = "error-message"; //
-      errorMessageElement.textContent = "Foto wajib diunggah."; //
+      errorMessageElement.className = "error-message";
+      errorMessageElement.textContent = "Foto wajib diunggah.";
       formCard.appendChild(errorMessageElement);
       submitButton.disabled = false;
       loadingIndicatorElement.remove();
@@ -393,15 +422,18 @@ export const renderAddStoryPage = (parentElement, navigateTo) => {
     }
 
     const description = descriptionTextarea.value;
+    const lat = latInput.value; // Ambil nilai latitude
+    const lon = lonInput.value; // Ambil nilai longitude
 
     try {
-      await addStory(description, capturedPhoto, token); //
+      // PERBAIKAN: Kirim lat dan lon ke fungsi addStory
+      await addStory(description, capturedPhoto, lat, lon, token);
+
       successMessageElement = document.createElement("p");
-      successMessageElement.className = "success-message"; //
-      successMessageElement.textContent = "Cerita berhasil ditambahkan!"; //
+      successMessageElement.className = "success-message";
+      successMessageElement.textContent = "Cerita berhasil ditambahkan!";
       formCard.appendChild(successMessageElement);
 
-      // Kosongkan field form
       descriptionTextarea.value = "";
       capturedPhoto = null;
       photoPreviewContainer.innerHTML = "";
@@ -411,12 +443,12 @@ export const renderAddStoryPage = (parentElement, navigateTo) => {
         map.removeLayer(marker);
         marker = null;
       }
-      map.setView(defaultMapCenter, 10); // Setel ulang tampilan peta
+      map.setView(defaultMapCenter, 10);
 
-      setTimeout(() => navigateTo("/"), 2000); //
+      setTimeout(() => navigateTo("/"), 2000);
     } catch (err) {
       errorMessageElement = document.createElement("p");
-      errorMessageElement.className = "error-message"; //
+      errorMessageElement.className = "error-message";
       errorMessageElement.textContent = err.message;
       formCard.appendChild(errorMessageElement);
     } finally {

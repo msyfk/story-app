@@ -71,48 +71,6 @@ body {
   color: #ffffff;
 }
 
-.skip-link {
-  /* Secara visual tersembunyi, tapi tetap dapat diakses oleh keyboard dan screen reader */
-  position: absolute; /* Tetap absolute agar tidak mengganggu layout */
-  left: -9999px; /* Pindahkan jauh ke kiri agar tidak terlihat */
-  top: auto; /* Pastikan top tidak diatur ke 0 atau nilai lain */
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0); /* Cara lama untuk menyembunyikan secara visual */
-  /* clip-path: inset(50%); */ /* Cara modern untuk menyembunyikan secara visual (alternatif yang lebih baik) */
-  white-space: nowrap; /* Mencegah teks terpotong */
-  border: 0;
-  padding: 0;
-  margin: -1px; /* Mengikuti convention untuk menyembunyikan elemen */
-  z-index: 9999; /* Pastikan di atas elemen lain saat muncul */
-
-  /* Gaya saat fokus */
-  background-color: #3498db;
-  color: white;
-  padding: 8px 15px;
-  text-decoration: none;
-  font-size: 1em;
-  font-weight: 500;
-  border-radius: 0 0 5px 5px;
-  transition: all 0.2s ease-in-out;
-}
-
-.skip-link:focus {
-  /* Saat difokuskan, tampilkan di tengah atas halaman */
-  position: fixed; /* Gunakan fixed agar selalu di viewport, bahkan saat scroll */
-  left: 50%; /* Pindahkan ke tengah horizontal */
-  top: 0; /* Tampilkan di bagian paling atas */
-  transform: translateX(-50%); /* Geser ke kiri setengah dari lebarnya sendiri untuk centering */
-  width: auto; /* Lebar otomatis sesuai konten */
-  height: auto; /* Tinggi otomatis sesuai konten */
-  overflow: visible; /* Buat terlihat */
-  clip: auto; /* Buat terlihat */
-  /* clip-path: none; */
-  text-align: center;
-  display: block; /* Pastikan mengambil ruang yang diperlukan */
-  margin: 0; /* Hapus margin negatif */
-}
 
 /* --- FORM CARD STYLING (General for Login, Register, Add Story) --- */
 /* Menggunakan .form-card yang sudah ada di RegisterPage & AddStoryPage */
@@ -185,6 +143,14 @@ body {
   color: #666;
   background-color: #f9f9f9;
   cursor: pointer;
+}
+
+.form-card fieldset.form-group legend {
+  margin-bottom: 0px; /* Jarak bawah legend */
+}
+
+#camera-controls {
+  margin-top: 15px; /* Jarak atas untuk kontrol kamera */
 }
 
 /* --- BUTTON STYLING (General) --- */

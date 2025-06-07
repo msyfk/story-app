@@ -71,8 +71,8 @@ body {
   color: #ffffff;
 }
 
+/* src/index.css */
 .skip-link {
-  /* Secara visual tersembunyi, tapi tetap dapat diakses oleh keyboard dan screen reader */
   position: absolute; /* Tetap absolute agar tidak mengganggu layout */
   left: -9999px; /* Pindahkan jauh ke kiri agar tidak terlihat */
   top: auto; /* Pastikan top tidak diatur ke 0 atau nilai lain */
@@ -181,6 +181,14 @@ body {
   color: #666;
   background-color: #f9f9f9;
   cursor: pointer;
+}
+
+.form-card fieldset.form-group legend {
+  margin-bottom: 0px; /* Jarak bawah legend */
+}
+
+#camera-controls {
+  margin-top: 15px; /* Jarak atas untuk kontrol kamera */
 }
 
 /* --- BUTTON STYLING (General) --- */

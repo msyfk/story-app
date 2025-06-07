@@ -2,16 +2,6 @@ import { addStory } from "../services/storyApi.js"; //
 import { getToken } from "../utils/auth.js"; //
 import { createLoadingIndicator } from "../components/LoadingIndicator.js"; //
 
-// Memperbaiki masalah ikon marker dengan Webpack (masih relevan)
-delete L.Icon.Default.prototype._getIconUrl; //
-L.Icon.Default.mergeOptions({
-  //
-  iconRetinaUrl:
-    "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png", //
-  iconUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png", //
-  shadowUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png", //
-});
-
 let currentStream = null; // Untuk menampung aliran media
 let map = null; // Untuk menampung instance peta Leaflet
 let marker = null; // Untuk menampung marker peta
@@ -250,53 +240,6 @@ export const renderAddStoryPage = (parentElement, navigateTo) => {
   form.appendChild(photoFieldset);
 
   // Map Section (kode yang ada)
-  const mapFieldset = document.createElement("fieldset");
-  mapFieldset.className = "form-group";
-  const mapLegend = document.createElement("legend");
-  mapLegend.textContent = "Pilih Lokasi di Peta (Opsional)";
-  mapFieldset.appendChild(mapLegend);
-
-  const mapDiv = document.createElement("div");
-  mapDiv.id = "add-story-map"; // ID for this specific map instance
-  mapDiv.style.height = "350px";
-  mapDiv.style.width = "100%";
-  mapDiv.style.borderRadius = "8px";
-  mapDiv.style.marginBottom = "15px";
-  mapFieldset.appendChild(mapDiv);
-
-  const latLonDiv = document.createElement("div");
-  latLonDiv.style.display = "flex";
-  latLonDiv.style.gap = "10px";
-
-  const latInput = document.createElement("input");
-  latInput.type = "number";
-  latInput.id = "lat";
-  latInput.placeholder = "Latitude";
-  latInput.step = "any";
-  latInput.setAttribute("aria-label", "Latitude");
-  latInput.value = "";
-  latLonDiv.appendChild(latInput);
-
-  const lonInput = document.createElement("input");
-  lonInput.type = "number";
-  lonInput.id = "lon";
-  lonInput.placeholder = "Longitude";
-  lonInput.step = "any";
-  lonInput.setAttribute("aria-label", "Longitude");
-  lonInput.value = "";
-  latLonDiv.appendChild(lonInput);
-
-  mapFieldset.appendChild(latLonDiv);
-
-  const clearLocationBtn = document.createElement("button");
-  clearLocationBtn.type = "button";
-  clearLocationBtn.className = "btn-info";
-  clearLocationBtn.textContent = "Hapus Lokasi";
-  clearLocationBtn.style.marginTop = "10px";
-  mapFieldset.appendChild(clearLocationBtn);
-
-  form.appendChild(mapFieldset);
-
   const submitButton = document.createElement("button");
   submitButton.type = "submit";
   submitButton.className = "btn-primary";
@@ -450,11 +393,9 @@ export const renderAddStoryPage = (parentElement, navigateTo) => {
     }
 
     const description = descriptionTextarea.value;
-    const latValue = latInput.value ? parseFloat(latInput.value) : undefined;
-    const lonValue = lonInput.value ? parseFloat(lonInput.value) : undefined;
 
     try {
-      await addStory(description, capturedPhoto, latValue, lonValue, token); //
+      await addStory(description, capturedPhoto, token); //
       successMessageElement = document.createElement("p");
       successMessageElement.className = "success-message"; //
       successMessageElement.textContent = "Cerita berhasil ditambahkan!"; //

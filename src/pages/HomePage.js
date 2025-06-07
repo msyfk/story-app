@@ -18,27 +18,6 @@ export const renderHomePage = async (parentElement) => {
     const stories = await getAllStories(); //
     loadingIndicator.remove(); // Hapus indikator loading
 
-    // Wadah peta
-    const mapContainerDiv = document.createElement("div");
-    mapContainerDiv.className = "homepage-map-container"; //
-    parentElement.appendChild(mapContainerDiv);
-
-    const mapHeading = document.createElement("h3");
-    mapHeading.textContent = "Lokasi Cerita"; //
-    mapContainerDiv.appendChild(mapHeading);
-
-    if (stories.length > 0) {
-      // Inisialisasi peta Leaflet setelah div peta ada di DOM
-      // Gunakan timeout untuk memastikan DOM benar-benar siap, meskipun tidak terlalu diperlukan dengan penambahan langsung
-      
-    } else {
-      const infoMessage = document.createElement("p");
-      infoMessage.className = "info-message"; //
-      infoMessage.textContent =
-        "Tidak ada lokasi cerita untuk ditampilkan di peta."; //
-      mapContainerDiv.appendChild(infoMessage);
-    }
-
     // Daftar cerita
     const storyListDiv = document.createElement("div");
     storyListDiv.className = "story-list"; //

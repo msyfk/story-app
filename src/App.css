@@ -12,10 +12,48 @@ body {
   line-height: 1.6;
 }
 
+/* Styling untuk container utama yang responsif */
 .container {
   max-width: 1000px;
-  margin: 20px auto;
-  padding: 0 20px;
+  margin: 0 auto;
+  padding: 30px 40px; /* Meningkatkan padding horizontal dari 30px ke 40px */
+  box-sizing: border-box;
+}
+
+/* Styling untuk heading di semua halaman */
+h2 {
+  text-align: center;
+  color: #2c3e50;
+  font-size: 2.2em;
+  margin-top: 20px;
+  margin-bottom: 30px;
+  padding-top: 10px;
+}
+
+/* Responsif untuk layar yang lebih kecil */
+@media (max-width: 768px) {
+  .container {
+    padding: 20px 30px; /* Meningkatkan padding horizontal pada layar medium */
+  }
+  
+  h2 {
+    font-size: 1.8em;
+    margin-top: 15px;
+    margin-bottom: 20px;
+  }
+}
+
+/* Responsif untuk layar sangat kecil */
+@media (max-width: 480px) {
+  .container {
+    padding: 15px 20px; /* Meningkatkan padding horizontal pada layar kecil */
+  }
+  
+  h2 {
+    font-size: 1.6em;
+    margin-top: 10px;
+    margin-bottom: 15px;
+  }
 }
 
 /* --- NAVBAR STYLING --- */
@@ -299,33 +337,25 @@ body {
 
 /* --- HOMEPAGE STYLING --- */
 .homepage-map-container {
-  margin-bottom: 40px; /* Tambahkan margin di bawah peta */
-  padding: 20px; /* Tambahkan padding di sekitar peta */
-  background-color: #ffffff; /* Latar belakang putih untuk kontainer peta */
+  margin-bottom: 40px;
+  padding: 20px;
+  background-color: #ffffff;
   border-radius: 10px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); /* Shadow yang konsisten */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
 }
 
-.homepage-map-container h3 {
-  text-align: center;
-  color: #2c3e50;
-  margin-bottom: 20px;
-  font-size: 1.8em;
-  font-weight: 600;
-}
-
-.story-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 25px;
-  padding: 20px 0;
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 30px 30px; /* Meningkatkan padding horizontal dari 20px ke 30px */
+  box-sizing: border-box; /* Pastikan padding termasuk dalam lebar */
 }
 
 .story-list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 25px;
-  padding: 20px 0;
+  gap: 30px; /* Meningkatkan gap dari 25px ke 30px */
+  padding: 30px 10px; /* Menambahkan padding horizontal 10px */
 }
 
 /* .story-card (sekarang digunakan oleh StoryItem.jsx) */
@@ -364,15 +394,16 @@ body {
 
 .story-item .content {
   /* Konten teks di dalam story item */
-  padding: 20px;
-  flex-grow: 1; /* Agar mengisi ruang yang tersedia */
+  padding: 25px 30px; /* Increased horizontal padding from 25px to 30px */
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
+  gap: 12px;
 }
 
 .story-item .content h3 {
   margin-top: 0;
-  margin-bottom: 10px;
+  margin-bottom: 12px; /* Increased from 10px */
   color: #2c3e50;
   font-size: 1.5em;
   font-weight: 600;
@@ -381,7 +412,7 @@ body {
 .story-item .content p {
   color: #666;
   font-size: 0.95em;
-  margin-bottom: 15px;
+  margin-bottom: 18px; /* Increased from 15px */
   flex-grow: 1; /* Memungkinkan deskripsi untuk mengisi ruang */
   /* max-height: 4.5em; */ /* Batasi tinggi deskripsi, jika diinginkan */
   overflow: hidden;
@@ -406,13 +437,28 @@ body {
   background-color: #217dbb;
 }
 
+/* Add specific styling for the date display */
+.story-item .date {
+  margin-top: 10px;
+  color: #777;
+  font-size: 0.85em;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+/* Add more bottom padding to the entire card */
+.story-item {
+  padding: 0 0 15px 0; /* Add bottom padding while keeping sides at 0 */
+}
+
 /* Homepage Heading */
 .homepage h2 {
   text-align: center;
   color: #2c3e50;
   font-size: 2.2em;
-  margin-top: 30px;
+  margin-top: 50px; /* Menambah margin atas */
   margin-bottom: 30px;
+  padding-top: 20px; /* Menambah padding atas */
 }
 
 /* --- DETAIL STORY PAGE --- */
@@ -551,6 +597,9 @@ fieldset::after {
     padding: 30px;
     margin: 30px 15px; /* Sedikit margin samping untuk layar kecil */
   }
+  .container {
+    padding: 25px 25px; /* Meningkatkan padding pada layar medium */
+  }
 }
 
 @media (max-width: 480px) {
@@ -587,6 +636,9 @@ fieldset::after {
   .btn-info {
     padding: 10px 20px;
     font-size: 1em;
+  }
+  .container {
+    padding: 20px 20px; /* Meningkatkan padding pada layar kecil */
   }
 }
 
@@ -678,3 +730,10 @@ fieldset::after {
     opacity: 1;
   }
 }
+
+
+
+
+
+
+

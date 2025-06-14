@@ -1,3 +1,5 @@
+// Leaflet is loaded from CDN in index.html and available as global 'L'
+
 import { addStory } from "../services/storyApi.js";
 import { getToken } from "../utils/auth.js";
 import { createLoadingIndicator } from "../components/LoadingIndicator.js";
@@ -6,7 +8,8 @@ let currentStream = null; // Untuk menampung aliran media
 let map = null; // Untuk menampung instance peta Leaflet
 let marker = null; // Untuk menampung marker peta
 
-const stopCamera = () => {
+// Export stopCamera function so it can be called from App.js
+export const stopCamera = () => {
   if (currentStream) {
     currentStream.getTracks().forEach((track) => track.stop());
     currentStream = null;
@@ -313,30 +316,32 @@ export const renderAddStoryPage = (parentElement, navigateTo) => {
       map = null;
       marker = null;
     }
-    map = L.map("add-story-map").setView(defaultMapCenter, 10);
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      attribution:
-        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    }).addTo(map);
+    map = window.L ? window.L.map("add-story-map").setView(defaultMapCenter, 10) : null;
+    if (map) {
+      window.L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution:
+          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      }).addTo(map);
 
-    map.on("click", (e) => {
-      const { lat, lng } = e.latlng;
-      latInput.value = lat.toFixed(6);
-      lonInput.value = lng.toFixed(6);
+      map.on("click", (e) => {
+        const { lat, lng } = e.latlng;
+        latInput.value = lat.toFixed(6);
+        lonInput.value = lng.toFixed(6);
 
-      if (marker) {
-        marker.setLatLng([lat, lng]);
-      } else {
-        marker = L.marker([lat, lng])
-          .addTo(map)
-          .bindPopup(
-            `Lokasi yang Anda pilih: <br/>Lat: ${lat.toFixed(
-              6
-            )} <br/>Lon: ${lng.toFixed(6)}`
-          )
-          .openPopup();
-      }
-    });
+        if (marker) {
+          marker.setLatLng([lat, lng]);
+        } else {
+          marker = window.L.marker([lat, lng])
+            .addTo(map)
+            .bindPopup(
+              `Lokasi yang Anda pilih: <br/>Lat: ${lat.toFixed(
+                6
+              )} <br/>Lon: ${lng.toFixed(6)}`
+            )
+            .openPopup();
+        }
+      });
+    }
   };
 
   latInput.addEventListener("input", () => {
@@ -346,7 +351,7 @@ export const renderAddStoryPage = (parentElement, navigateTo) => {
       if (marker) {
         marker.setLatLng([latVal, lonVal]);
       } else {
-        marker = L.marker([latVal, lonVal]).addTo(map);
+        marker = window.L.marker([latVal, lonVal]).addTo(map);
       }
       map.setView([latVal, lonVal], 10);
     }
@@ -359,7 +364,7 @@ export const renderAddStoryPage = (parentElement, navigateTo) => {
       if (marker) {
         marker.setLatLng([latVal, lonVal]);
       } else {
-        marker = L.marker([latVal, lonVal]).addTo(map);
+        marker = window.L.marker([latVal, lonVal]).addTo(map);
       }
       map.setView([latVal, lonVal], 10);
     }

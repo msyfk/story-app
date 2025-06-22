@@ -2,16 +2,38 @@ import { StoryModel } from "../models/StoryModel.js";
 import { StoryPresenter } from "../presenters/StoryPresenter.js";
 import { createStoryItem } from "../components/StoryItem.js";
 import { createLoadingIndicator } from "../components/LoadingIndicator.js";
+import { createNotificationToggle } from "../components/NotificationToggle.js";
+import { createInstallPWAButton } from "../components/InstallPWA.js";
+import { createOfflineManager } from "../components/OfflineManager.js";
+import { registerServiceWorker } from "../utils/notification.js";
 
 export const renderHomePage = async (parentElement) => {
+  // Inisialisasi service worker saat halaman dimuat
+  registerServiceWorker();
+  
   // Pastikan parentElement kosong sebelum menambahkan konten baru
   parentElement.innerHTML = "";
   parentElement.setAttribute("aria-labelledby", "latest-stories-heading");
 
-  const heading = document.createElement("h2");
-  heading.id = "latest-stories-heading";
-  heading.textContent = "Cerita Terbaru";
-  parentElement.appendChild(heading);
+  // Tambahkan toggle notifikasi di bagian atas halaman
+  const headerSection = document.createElement("div");
+  headerSection.className = "homepage-header";
+  headerSection.innerHTML = `
+    <h2 id="latest-stories-heading">Cerita Terbaru</h2>
+  `;
+  
+  // Tambahkan toggle notifikasi jika browser mendukung
+  if ('Notification' in window && 'serviceWorker' in navigator) {
+    createNotificationToggle(headerSection);
+  }
+  
+  // Tambahkan tombol instalasi PWA
+  createInstallPWAButton(headerSection);
+  
+  parentElement.appendChild(headerSection);
+
+  // Tambahkan pengelola data offline
+  createOfflineManager(parentElement);
 
   const loadingIndicator = createLoadingIndicator();
   parentElement.appendChild(loadingIndicator);

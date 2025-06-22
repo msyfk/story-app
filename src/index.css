@@ -660,3 +660,27 @@ fieldset::after {
     opacity: 1;
   }
 }
+
+/* Styling untuk komponen notifikasi */
+.notification-toggle {
+  margin: 10px 0;
+}
+
+.notification-toggle button {
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.notification-toggle button.active {
+  background-color: #27ae60;
+  color: white;
+}
+
+.homepage-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}

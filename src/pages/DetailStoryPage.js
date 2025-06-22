@@ -1,4 +1,5 @@
-import { getStoryDetail } from "../services/storyApi.js"; //
+import { getStoryDetail } from "../services/storyApi.js";
+import { getStoryByIdFromDB } from "../utils/indexedDB.js";
 import { createLoadingIndicator } from "../components/LoadingIndicator.js";
 
 // Fungsi pembantu untuk format tanggal (dari presenter asli)
@@ -22,8 +23,17 @@ export const renderDetailStoryPage = async (parentElement, storyId) => {
   parentElement.appendChild(loadingIndicator);
 
   try {
-    const story = await getStoryDetail(storyId); //
-    loadingIndicator.remove(); // Hapus indikator loading
+    // Coba ambil dari API terlebih dahulu
+    let story;
+    try {
+      story = await getStoryDetail(storyId);
+    } catch (error) {
+      // Jika gagal, coba ambil dari IndexedDB
+      story = await getStoryByIdFromDB(storyId);
+      if (!story) throw new Error("Cerita tidak ditemukan. Periksa koneksi internet Anda.");
+    }
+    
+    loadingIndicator.remove();
 
     if (!story) {
       const infoMessage = document.createElement("p");

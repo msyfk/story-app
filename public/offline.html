@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Offline - Story App</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f7f6;
+      color: #333;
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
+    }
+    
+    .offline-container {
+      max-width: 600px;
+      padding: 30px;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    }
+    
+    h1 {
+      color: #2c3e50;
+      margin-bottom: 20px;
+    }
+    
+    p {
+      margin-bottom: 20px;
+    }
+    
+    .btn {
+      display: inline-block;
+      background-color: #3498db;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: background-color 0.3s ease;
+    }
+    
+    .btn:hover {
+      background-color: #217dbb;
+    }
+    
+    .offline-icon {
+      font-size: 60px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="offline-container">
+    <div class="offline-icon">📶</div>
+    <h1>Anda Sedang Offline</h1>
+    <p>Sepertinya Anda sedang tidak terhubung ke internet. Beberapa fitur mungkin tidak tersedia.</p>
+    <p>Anda masih dapat melihat konten yang telah dimuat sebelumnya.</p>
+    <a href="/" class="btn">Coba Lagi</a>
+  </div>
+</body>
+</html>

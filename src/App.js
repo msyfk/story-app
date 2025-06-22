@@ -5,9 +5,14 @@ import { renderLoginPage } from "./pages/LoginPage.js";
 import { renderRegisterPage } from "./pages/RegisterPage.js";
 import { renderAddStoryPage, stopCamera } from "./pages/AddStoryPage.js";
 import { renderDetailStoryPage } from "./pages/DetailStoryPage.js";
+import { registerServiceWorker } from "./utils/notification.js";
 
 let isLoggedIn = !!getToken();
 let appRootElement;
+let isOnline = navigator.onLine;
+
+// Inisialisasi service worker saat aplikasi dimulai
+registerServiceWorker();
 
 const updateLoginStatus = (status) => {
   isLoggedIn = status;
@@ -37,6 +42,16 @@ const navigateTo = (path) => {
     window.location.hash = path;
     renderApplication();
   }
+};
+
+// Fungsi untuk menampilkan pesan offline
+const showOfflineMessage = (parentElement) => {
+  const offlineMessage = document.createElement('div');
+  offlineMessage.className = 'offline-message';
+  offlineMessage.innerHTML = `
+    <p><strong>Anda sedang offline.</strong> Beberapa fitur mungkin tidak tersedia.</p>
+  `;
+  parentElement.appendChild(offlineMessage);
 };
 
 const renderApplication = () => {
@@ -79,13 +94,21 @@ const renderApplication = () => {
     });
   }
 
-  // Clear main content
-  const mainContent = appRootElement.querySelector('main');
-  mainContent.innerHTML = '';
-
-  // Render Navbar in header
+  // Get references to header and main
   const header = appRootElement.querySelector('header');
+  const mainContent = appRootElement.querySelector('main');
+  
+  // Clear previous content
+  header.innerHTML = '';
+  mainContent.innerHTML = '';
+  
+  // Render navbar in header
   renderNavbar(header, isLoggedIn, handleLogout, navigateTo);
+  
+  // Show offline message if user is offline
+  if (!isOnline) {
+    showOfflineMessage(mainContent);
+  }
 
   // Render page content in main
   if (currentHash === "/") {
@@ -113,13 +136,22 @@ export const App = {
   init: (rootElement) => {
     appRootElement = rootElement;
 
+    // Pantau status koneksi
+    window.addEventListener('online', () => {
+      isOnline = true;
+      renderApplication();
+    });
+    
+    window.addEventListener('offline', () => {
+      isOnline = false;
+      renderApplication();
+    });
+
     // Render awal berdasarkan hash saat ini
     renderApplication();
 
     // Dengarkan perubahan hash untuk render ulang
-    window.addEventListener("hashchange", renderApplication);
-  },
-};
-
-
+      window.addEventListener("hashchange", renderApplication);
+    }
+  };
 

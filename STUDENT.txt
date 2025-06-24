@@ -1,0 +1,28 @@
+Nama: Moh. Musyaffak
+Email: 143171049+msyfk@users.noreply.github.com
+GitHub Username: msyfk
+
+Proyek: Story App
+Deskripsi: Aplikasi berbasis web untuk berbagi cerita dengan fitur lokasi. Dibangun dengan JavaScript vanilla dan arsitektur Model-View-Presenter (MVP) menggunakan Webpack sebagai bundler.
+
+Fitur yang diimplementasikan:
+- Sistem autentikasi pengguna (login/register)
+- Menambah cerita dengan foto dan lokasi
+- Menampilkan daftar cerita
+- Detail cerita dengan peta lokasi
+- Progressive Web App (PWA)
+- Service Worker untuk offline support
+- Push notifications
+- Responsive design
+- Accessibility features
+
+Teknologi yang digunakan:
+- JavaScript (ES6+)
+- HTML5 & CSS3
+- Webpack
+- Babel
+- Leaflet.js untuk peta
+- Service Worker API
+- Notification API
+- Camera API
+- Geolocation API

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Story App</title>
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#2c3e50" />
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+  </head>
+  <body>
+    <a href="#main-content" class="skipToContent">Lewati ke Konten Utama</a>
+
+    <header class="app-bar">
+      <div class="app-bar__menu">
+        <button id="drawer-button" class="drawer-button" aria-label="Menu">☰</button>
+      </div>
+      <div class="app-bar__brand">
+        <h1><a href="#/">Story App</a></h1>
+      </div>
+      <nav id="navigation-drawer" class="navigation-drawer">
+        <ul id="nav-list" class="nav-list">
+          <!-- Navigation items will be populated by JavaScript -->
+        </ul>
+        <div class="notification-toggle">
+          <label for="toggle-notification">
+            <input type="checkbox" id="toggle-notification" />
+            Aktifkan Notifikasi
+          </label>
+          <div id="notif-status" class="notif-status"></div>
+        </div>
+      </nav>
+    </header>
+
+    <main id="main-content" class="main-content">
+      <!-- Content will be populated by JavaScript -->
+    </main>
+
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
+  </body>
+</html>
